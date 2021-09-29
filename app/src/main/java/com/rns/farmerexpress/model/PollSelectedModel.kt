@@ -5,7 +5,7 @@ data class PollSelectedModel(
     val message: String,
     val isPollSelected: String,
     val selectedPoll: String,
-    val pollsList : List<Polls>
+    val poll : List<Polls>
 )
         data class Polls(
             val poll : String,

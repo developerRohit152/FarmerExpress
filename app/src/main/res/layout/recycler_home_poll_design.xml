@@ -99,9 +99,13 @@
     android:orientation="vertical"
     android:paddingBottom="10dp">
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rzp_border"
         android:id="@+id/cParent">
 
 
@@ -110,7 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="100"
-            android:progress="25"
+            android:progress="10"
             android:progressDrawable="@drawable/progress_track"
             android:thumb="@android:color/transparent"
             app:layout_constraintStart_toStartOf="parent"
@@ -139,10 +143,10 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/rzp_border"
                 android:layout_marginTop="5dp"
         android:id="@+id/cParent2">
 
@@ -186,6 +190,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
+        android:background="@drawable/rzp_border"
         android:id="@+id/cParent3">
 
         <SeekBar
@@ -226,7 +231,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
+        android:background="@drawable/rzp_border"
+
+        android:layout_marginTop="5dp"
         android:id="@+id/cParent4">
 
         <SeekBar
@@ -267,7 +274,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
+        android:background="@drawable/rzp_border"
+        android:layout_marginTop="5dp"
         android:id="@+id/cParent5">
 
         <SeekBar
