@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+
+    app:popupTheme="@style/Theme.Navigation.PopupOverlay"
+    app:layout_scrollFlags="scroll|enterAlways">
+
+
+
+
+<!--    <ImageView-->
+<!--        android:layout_width="50dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_marginTop="3dp"-->
+<!--        android:layout_alignParentLeft="true"-->
+<!--        android:src="@drawable/ic_farmer_express_logo" />-->
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="10dp"
+                android:iconifiedByDefault="true"
+                android:layoutDirection="rtl"
+                app:queryHint="search" />
+
+
+
+
+<!--            <ImageView-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginLeft="30dp"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:src="@drawable/ic_outline_notifications_24" />-->
+
+</androidx.appcompat.widget.Toolbar>

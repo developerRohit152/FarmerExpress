@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.rns.farmerexpress.ui.fragments.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_homes" />
+
+    <fragment
+        android:id="@+id/navigation_buy"
+        android:name="com.rns.farmerexpress.ui.fragments.BuyFragment"
+        android:label="@string/title_buy"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_sell"
+        android:name="com.rns.farmerexpress.ui.fragments.SellFragment"
+        android:label="@string/title_sell"
+        tools:layout="@layout/fragment_sell" />
+    <fragment
+        android:id="@+id/navigation_question"
+        android:name="com.rns.farmerexpress.ui.fragments.QuestionFragment"
+        android:label="@string/title_question"
+        tools:layout="@layout/fragment_question" />
+    <fragment
+        android:id="@+id/navigation_info"
+        android:name="com.rns.farmerexpress.ui.fragments.InfoFragment"
+        android:label="@string/title_info"
+        tools:layout="@layout/fragment_info" />
+
+
+    <fragment
+        android:id="@+id/navigation_recharge"
+        android:name="com.rns.farmerexpress.ui.fragments.RechargeFragment"
+        android:label="@string/title_recharge"
+        tools:layout="@layout/fragment_recharge" />
+
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.rns.farmerexpress.ui.fragments.ProfileEditFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile_edit" />
+
+
+
+
+</navigation>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+
+    tools:context=".ui.fragments.ProfileEditFragment">
+
+
+    <LinearLayout
+        android:id="@+id/llParentP"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="?attr/actionBarSize"
+>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            app:cardBackgroundColor="@color/bgColor"
+            app:cardCornerRadius="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/civImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/logo" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/civChoose"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="-30dp"
+                    android:src="@drawable/profile_add" />
+
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/green"
+                    android:clickable="false"
+                    android:drawableRight="@drawable/ic_baseline_edit_24"
+                    android:paddingLeft="10dp"
+                    android:hint="अपना नाम लिखे "
+                    tools:ignore="HardcodedText" />
+
+                <EditText
+                    android:id="@+id/etPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/green"
+                    android:clickable="false"
+                    android:editable="false"
+                    android:paddingLeft="10dp"
+                    android:hint="अपना फोन नंबर लिखे " />
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/green"
+                    android:clickable="false"
+                    android:drawableRight="@drawable/ic_baseline_edit_24"
+                    android:paddingLeft="10dp"
+                    android:hint="अपना ईमेल लिखे " />
+
+                <EditText
+                    android:id="@+id/etVillage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/green"
+                    android:clickable="false"
+                    android:drawableRight="@drawable/ic_baseline_edit_24"
+                    android:paddingLeft="10dp"
+                    android:hint="अपने गाव या शहर का का नाम लिखे " />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/et_design"
+                    >
+                    <TextView
+                        android:id="@+id/tvGender"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingLeft="10dp"
+                        android:textSize="16dp"
+                        android:gravity="center_vertical"
+                        android:hint="अपना लिंग चुने"
+                        tools:ignore="HardcodedText" />
+                    <Spinner
+                        android:id="@+id/spGender"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/green"
+                        android:layout_weight="5"
+                        android:paddingLeft="10dp"
+                        />
+
+                </LinearLayout>
+                <EditText
+                    android:id="@+id/etDOB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/green"
+                    android:clickable="false"
+                    android:inputType="date"
+                    android:drawableRight="@drawable/ic_baseline_edit_24"
+                    android:paddingLeft="10dp"
+                    android:hint="अपना जन्म दिनाक लिखे जैसे: 22/05/1999" />
+
+                <EditText
+                    android:id="@+id/etProfession"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/green"
+                    android:clickable="false"
+                    android:drawableRight="@drawable/ic_baseline_edit_24"
+                    android:paddingLeft="10dp"
+                    android:hint="अपना व्यवसाय लिखे " />
+
+                <EditText
+                    android:id="@+id/etAbout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/green"
+                    android:drawableRight="@drawable/ic_baseline_edit_24"
+                    android:clickable="false"
+                    android:paddingLeft="10dp"
+                    android:hint="अपने बारे मे लिखे " />
+
+                <Button
+                    android:id="@+id/btnUpdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@color/white"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="?attr/actionBarSize"
+                    android:background="@drawable/rounded_button"
+                    android:text="update"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:id="@+id/pbProfileEdit"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_round"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
