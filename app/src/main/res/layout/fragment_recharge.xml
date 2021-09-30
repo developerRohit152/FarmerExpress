@@ -97,6 +97,17 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tvInvalidOP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="यह ऑपरेटर आप के राज्य में वैलिड नहीं हैं "
+            android:gravity="center"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            />
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

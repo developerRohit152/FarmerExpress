@@ -6,6 +6,7 @@ import android.app.Presentation
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
@@ -19,6 +20,7 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.ImageSlider
@@ -46,6 +48,7 @@ import androidx.core.content.ContextCompat.startActivity
 import com.rns.farmerexpress.ui.activities.CommentActivity
 import androidx.core.content.ContextCompat.startActivity
 import com.rns.farmerexpress.model.*
+import kotlinx.android.synthetic.main.recycler_sell_item.view.*
 
 
 class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>) :
@@ -165,7 +168,7 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
 //         tvOptions4 = itemView.findViewById(R.id.tvOption4)
 //         tvOptions5 = itemView.findViewById(R.id.tvOption5)
 
-        @SuppressLint("SetTextI18n", "UseCompatLoadingForDrawables")
+        @SuppressLint("SetTextI18n", "UseCompatLoadingForDrawables", "ResourceAsColor")
         fun bind(position: Int) {
             val tagList = ArrayList<String>()
             val pollList = ArrayList<String>()
@@ -275,31 +278,43 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
             }
             hideSeekbar(itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5)
             hideTvPercent(itemView.tvPercent1,itemView.tvPercent2,itemView.tvPercent3,itemView.tvPercent4,itemView.tvPercent5)
+            showClParent(itemView.cParent,itemView.cParent2,itemView.cParent3,itemView.cParent4,itemView.cParent5)
 
             itemView.tvOption1.setOnClickListener {
+                changeSeekBarColor(itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5)
                 selectPoll(postDatas.post_id.toString(),pollList[0],itemView.tvPercent1,itemView.tvPercent2,itemView.tvPercent3,itemView.tvPercent4,itemView.tvPercent5,
-                    itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5)
+                    itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5,itemView.cParent,itemView.cParent2,itemView.cParent3,
+                    itemView.cParent4,itemView.cParent5)
             }
             itemView.tvOption2.setOnClickListener {
+                changeSeekBarColor(itemView.seekbar1,itemView.seekbar2,itemView.seekbar4,itemView.seekbar5)
                 selectPoll(postDatas.post_id.toString(),pollList[1],itemView.tvPercent1,itemView.tvPercent2,itemView.tvPercent3,itemView.tvPercent4,itemView.tvPercent5,
-                    itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5)
+                    itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5,itemView.cParent,itemView.cParent2,itemView.cParent3,
+                    itemView.cParent4,itemView.cParent5)
             }
             itemView.tvOption3.setOnClickListener {
+                changeSeekBarColor(itemView.seekbar1,itemView.seekbar2,itemView.seekbar4,itemView.seekbar5)
                 selectPoll(postDatas.post_id.toString(),pollList[2],itemView.tvPercent1,itemView.tvPercent2,itemView.tvPercent3,itemView.tvPercent4,itemView.tvPercent5,
-                    itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5)
+                    itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5,itemView.cParent,itemView.cParent2,itemView.cParent3,
+                    itemView.cParent4,itemView.cParent5)
             }
             itemView.tvOption4.setOnClickListener {
+                changeSeekBarColor(itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar5)
                 selectPoll(postDatas.post_id.toString(),pollList[3],itemView.tvPercent1,itemView.tvPercent2,itemView.tvPercent3,itemView.tvPercent4,itemView.tvPercent5,
-                    itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5)
+                    itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5,itemView.cParent,itemView.cParent2,itemView.cParent3,
+                    itemView.cParent4,itemView.cParent5)
             }
             itemView.tvOption5.setOnClickListener {
+                changeSeekBarColor(itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4)
                 selectPoll(postDatas.post_id.toString(),pollList[4],itemView.tvPercent1,itemView.tvPercent2,itemView.tvPercent3,itemView.tvPercent4,itemView.tvPercent5,
-                    itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5)
+                    itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5,itemView.cParent,itemView.cParent2,itemView.cParent3,
+                    itemView.cParent4,itemView.cParent5)
             }
 
             if (postDatas.isPollSelected == "1"){
                 try {
                     showSeekbar(itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5)
+                    hideClParent(itemView.cParent,itemView.cParent2,itemView.cParent3,itemView.cParent4,itemView.cParent5)
                     showTvPercent(itemView.tvPercent1,itemView.tvPercent2,itemView.tvPercent3,itemView.tvPercent4,itemView.tvPercent5)
                     itemView.tvPercent1?.text = pollListValue[0].toString()+"%"
                     itemView.seekbar1?.progress = pollListValue[0]
@@ -323,26 +338,18 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
                         itemView.seekbar5?.max = 100
                     }
 
-                    if(postDatas.selectedPoll== pollList[0]){
-//                        itemView.seekbar1.setProgressDrawable(activity.getResources().getDrawable(R.drawable.poll_selected_design))
-                        itemView.tvOption1.setBackgroundResource(R.drawable.poll_selected_design)
-                        itemView.tvPercent1?.text = pollListValue[0].toString()+"%"
-                        itemView.seekbar1?.progress = pollListValue[0]
-                        itemView.seekbar1?.max = 100
-                    }else if(postDatas.selectedPoll== pollList[1]){
-                        itemView.tvPercent2?.text = pollListValue[1].toString()+"%"
-                        itemView.seekbar2?.progress = pollListValue[1]
-//                        itemView.seekbar2.setProgressDrawable(activity.getResources().getDrawable(R.drawable.poll_selected_design))
-                        itemView.tvOption2.setBackgroundResource(R.drawable.poll_selected_design)
-
-                        itemView.seekbar2?.max = 100
-                    }else if(postDatas.selectedPoll== pollList[2]){
-                        itemView.seekbar3.setProgressDrawable(activity.getResources().getDrawable(R.drawable.poll_selected_design))
-                    }else if(postDatas.selectedPoll== pollList[3]){
-                        itemView.seekbar4.setProgressDrawable(activity.getResources().getDrawable(R.drawable.poll_selected_design))
-                    }else if(postDatas.selectedPoll== pollList[4]){
-                        itemView.seekbar5.setProgressDrawable(activity.getResources().getDrawable(R.drawable.poll_selected_design))
+                    if(postDatas.selectedPoll == pollList[0]){
+                        changeSeekBarColor(itemView.seekbar2,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5)
+                    }else if(postDatas.selectedPoll == pollList[1]){
+                        changeSeekBarColor(itemView.seekbar1,itemView.seekbar3,itemView.seekbar4,itemView.seekbar5)
+                    }else if(postDatas.selectedPoll == pollList[2]){
+                        changeSeekBarColor(itemView.seekbar1,itemView.seekbar2,itemView.seekbar4,itemView.seekbar5)
+                    }else if(postDatas.selectedPoll == pollList[3]){
+                        changeSeekBarColor(itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar5)
+                    }else if(postDatas.selectedPoll == pollList[4]){
+                        changeSeekBarColor(itemView.seekbar1,itemView.seekbar2,itemView.seekbar3,itemView.seekbar4)
                     }
+
                 }catch (e : Exception){
 
                 }
@@ -362,6 +369,13 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
         }
     }
 
+    @SuppressLint("ResourceAsColor")
+    private fun changeSeekBarColor(seekbar2: SeekBar?, seekbar3: SeekBar?, seekbar4: SeekBar?, seekbar5: SeekBar?) {
+        seekbar2?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
+        seekbar3?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
+        seekbar4?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
+        seekbar5?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
+    }
     private fun hideSeekbar(seekbar1: SeekBar?,seekbar2: SeekBar?,seekbar3: SeekBar?,seekbar4: SeekBar?,seekbar5: SeekBar?) {
         seekbar1?.visibility = View.INVISIBLE
         seekbar2?.visibility = View.INVISIBLE
@@ -389,6 +403,21 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
         tvPercent3?.visibility = View.VISIBLE
         tvPercent4?.visibility = View.VISIBLE
         tvPercent5?.visibility = View.VISIBLE
+    }
+    private fun hideClParent(clParent:ConstraintLayout?,clParent2:ConstraintLayout?,clParent3:ConstraintLayout?,clParent4:ConstraintLayout?,clParent5:ConstraintLayout?) {
+        clParent?.background = null
+        clParent2?.background = null
+        clParent3?.background = null
+        clParent4?.background = null
+        clParent5?.background = null
+
+    }
+    private fun showClParent(clParent: ConstraintLayout?,clParent2: ConstraintLayout?,clParent3: ConstraintLayout?,clParent4: ConstraintLayout?,clParent5: ConstraintLayout?) {
+        clParent?.setBackgroundResource(R.drawable.rzp_border)
+        clParent2?.setBackgroundResource(R.drawable.rzp_border)
+        clParent3?.setBackgroundResource(R.drawable.rzp_border)
+        clParent4?.setBackgroundResource(R.drawable.rzp_border)
+        clParent5?.setBackgroundResource(R.drawable.rzp_border)
     }
 
     private inner class BGViewHolder(itemView: View) :
@@ -566,7 +595,9 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
     }
 
     private fun selectPoll(postID: String,pollDes:String,tvOptions1:TextView?,tvOptions2:TextView?,tvOptions3:TextView?,tvOptions4:TextView?,tvOptions5:TextView?,seekbar1: SeekBar?,
-                           seekbar2: SeekBar?,seekbar3: SeekBar?,seekbar4: SeekBar?,seekbar5: SeekBar?){
+                           seekbar2: SeekBar?,seekbar3: SeekBar?,seekbar4: SeekBar?,seekbar5: SeekBar?,clParent:ConstraintLayout?,clParent2:ConstraintLayout?,
+                           clParent3:ConstraintLayout?,clParent4:ConstraintLayout?,clParent5:ConstraintLayout?){
+        hideClParent(clParent,clParent2,clParent3,clParent4,clParent5)
         val session = PreferenceConnector.readString(activity,PreferenceConnector.profilestatus,"")
         val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
         val call: retrofit2.Call<PollSelectedModel> = service.pollSelect(session, postID,pollDes)
@@ -578,13 +609,13 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
                     response: Response<PollSelectedModel>
                 ) {
                     response.body()!!
-                    Toast.makeText(activity,response.body()!!.selectedPoll,Toast.LENGTH_SHORT).show()
                     val pollListValue = ArrayList<Polls>()
                     if(response.body()!!.poll.isNotEmpty()) {
                         for (data in response.body()!!.poll) {
                             pollListValue.add(Polls(data.poll, data.value))
                         }
                     }
+
                     try {
                         showSeekbar(seekbar1,seekbar2,seekbar3,seekbar4,seekbar5)
                         showTvPercent(tvOptions1,tvOptions2,tvOptions3,tvOptions4,tvOptions5)

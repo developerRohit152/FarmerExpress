@@ -15,6 +15,7 @@
     <color name="green">#2ce733</color>
     <color name="orange">#efa21b</color>
     <color name="greendark">#2EC02B</color>
+    <color name="pollColor">#94FF99</color>
 
 <!--    Post Color-->
     <color name="cvYellow">#FFB6C14B</color>

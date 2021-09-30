@@ -71,28 +71,16 @@ class RechargeFragment : Fragment() {
                 PreferenceConnector.writeString(requireContext(),PreferenceConnector.stateName,stateName)
                 PreferenceConnector.writeString(requireContext(),PreferenceConnector.opName,opName)
                 PreferenceConnector.writeString(requireContext(),PreferenceConnector.MOBILE,etPhone.text.toString())
-//                getDummyPlan()
-//                getPlanData.clear()
+                getPlanData.clear()
                  progressBar.visibility = View.VISIBLE
-                recyclerView.visibility = View.INVISIBLE
                 getRechargeList(circleCode,opCode)
+                recyclerView.visibility = View.INVISIBLE
 //                Toast.makeText(requireContext(), "plan", Toast.LENGTH_SHORT).show()
             }
         }
         return root
     }
 
-    @SuppressLint("WrongConstant")
-    private fun getDummyPlan() {
-        val list: ArrayList<Plan> = ArrayList()
-        list.add(Plan("40", "28 days", "get", "full"))
-        list.add(Plan("50", "28 days", "get", "full"))
-        list.add(Plan("120", "28 days", "get", "full"))
-        val ad = RechargeAdapter(requireActivity(), list)
-        recyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayout.VERTICAL, false)
-        recyclerView.adapter = ad
-    }
 
     private fun getOperatorList() {
         val service: ApiInterface = APIClient.getPayment()!!.create(ApiInterface::class.java)
@@ -106,6 +94,8 @@ class RechargeFragment : Fragment() {
                     val responseBody = response.body()!!
                     Log.d("onRes", "onResponse: $responseBody")
                     val getOperatorData: ArrayList<OperatorModel> = ArrayList()
+                    val getOpDataPrepaidID: ArrayList<String> = ArrayList()
+                    val getOpDataPrepaidName: ArrayList<String> = ArrayList()
                     for (operatorData in responseBody.response) {
                         val data: OperatorModel =
                             OperatorModel(
@@ -126,14 +116,32 @@ class RechargeFragment : Fragment() {
                     if (response.body() != null) {
                         try {
                             for (s in 0..getOperatorData.size) {
-                                if (getOperatorData[s].service_type == "Prepaid")
-                                    getOpName.add(getOperatorData[s].operator_name)
-                                getOpCode.add(getOperatorData[s].operator_id)
+                                if (getOperatorData[s].service_type == "Prepaid") {
+                                    getOpDataPrepaidID.add(getOperatorData[s].operator_id)
+                                    getOpDataPrepaidName.add(getOperatorData[s].operator_name)
+                                }
                             }
+
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
                     }
+                    try {
+                        for (s in 0..getOpDataPrepaidID.size) {
+                            getOpCode.add(getOpDataPrepaidID[s])
+                        }
+                    }catch (e : Exception){
+                        e.printStackTrace()
+                    }
+                    try {
+                        for (s in 0..getOpDataPrepaidName.size) {
+                            getOpName.add(getOpDataPrepaidName[s])
+                        }
+                    }catch (e : Exception){
+                        e.printStackTrace()
+                    }
+
+
                     val adapter: ArrayAdapter<Any?> = ArrayAdapter<Any?>(
                         requireContext(),
                         android.R.layout.simple_spinner_dropdown_item,
@@ -153,7 +161,7 @@ class RechargeFragment : Fragment() {
                                 opCode = Integer.parseInt(getOpCode[p2])
                                 opName = getOpName[p2]
 
-//                            Toast.makeText(requireContext(),getOperatorData[p2].operator_name.toString(),Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),opName,Toast.LENGTH_SHORT).show()
 //                            Toast.makeText(requireContext(),i.toString(),Toast.LENGTH_SHORT).show()
 //                            ProfileActivity.subDistPos = p2
                             }
@@ -222,7 +230,6 @@ class RechargeFragment : Fragment() {
                                 circleCode =
                                     Integer.parseInt(getCircleData[p2].circle_code)
                                 stateName = getCircleData[p2].circle_name
-                                getPlanData.clear()
 //                                getRechargeList(circleCode,opCode)
 //                            Toast.makeText(requireContext(),getOperatorData[p2].operator_name.toString(),Toast.LENGTH_SHORT).show()
 //                            Toast.makeText(requireContext(),i.toString(),Toast.LENGTH_SHORT).show()
@@ -258,18 +265,51 @@ class RechargeFragment : Fragment() {
                 ) {
                     val responseBody = response.body()!!
                     Log.d("onResPlan", "onResponse: $responseBody")
-                    for (planData in responseBody.plans.FULLTT) {
-                        val data: Plan =
-                            Plan(planData.rs, planData.validity, planData.desc, planData.Type)
-                        getPlanData.add(data)
-                    }
-                    val adapterrv: RechargeAdapter = RechargeAdapter(requireActivity(), getPlanData)
-                    recyclerView.layoutManager =
-                        LinearLayoutManager(requireContext(), LinearLayout.VERTICAL, false)
-                    recyclerView.adapter = adapterrv
+                    if(responseBody.success == "false"){
+                        tvInvalidOP.visibility = View.VISIBLE
+                        progressBar.visibility = View.INVISIBLE
+                    }else {
+                        tvInvalidOP.visibility = View.GONE
+                        try {
+                            for (planData in responseBody.plans.FULLTT) {
+                                val data: Plan =
+                                    Plan(
+                                        planData.rs,
+                                        planData.validity,
+                                        planData.desc,
+                                        planData.Type,
+                                        responseBody.operator
+                                    )
+                                getPlanData.add(data)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                        try {
+                            for (planData in responseBody.plans.TOPUP) {
+                                val data: Plan =
+                                    Plan(
+                                        planData.rs,
+                                        planData.validity,
+                                        planData.desc,
+                                        planData.Type,
+                                        responseBody.operator
+                                    )
+                                getPlanData.add(data)
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+
+                        val adapterrv: RechargeAdapter =
+                            RechargeAdapter(requireActivity(), getPlanData)
+                        recyclerView.layoutManager =
+                            LinearLayoutManager(requireContext(), LinearLayout.VERTICAL, false)
+                        recyclerView.adapter = adapterrv
 //                    adapterrv.notifyDataSetChanged()
-                    progressBar.visibility = View.INVISIBLE
-                    recyclerView.visibility = View.VISIBLE
+                        progressBar.visibility = View.INVISIBLE
+                        recyclerView.visibility = View.VISIBLE
+                    }
                 }
 
 

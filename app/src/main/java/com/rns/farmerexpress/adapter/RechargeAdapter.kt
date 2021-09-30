@@ -30,7 +30,8 @@ class RechargeAdapter(val activity : Activity,val list:ArrayList<Plan>) : Recycl
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.itemView.tvType.text = list[position].Type
+
+        holder.itemView.tvType.text = list[position].operator +" "+ list[position].Type
         holder.itemView.tvOfferDetails.text = list[position].desc + "\n\nवेधता : ${list[position].validity}"
         holder.itemView.tvRupay.text = "₹ "+ list[position].rs
         holder.itemView.tvPlanSec.setOnClickListener {
