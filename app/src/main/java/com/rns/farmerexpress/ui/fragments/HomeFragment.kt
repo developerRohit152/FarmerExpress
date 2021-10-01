@@ -1,20 +1,29 @@
 package com.rns.farmerexpress.ui.fragments
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
+import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonArray
 import com.rns.farmerexpress.R
@@ -40,8 +49,6 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomesBinding? = null
     private lateinit var  recyclerView : RecyclerView
-    private val imageList = ArrayList<SlideModel>()
-    private val imageList2  = ArrayList<SlideModel>()
      var list: ArrayList<PostDatas> = ArrayList()
     lateinit var adapter: HomeAdapter
     var snackbar: Snackbar? = null
@@ -57,6 +64,32 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private var fusedLocationProvider: FusedLocationProviderClient? = null
+    private val locationRequest: LocationRequest = LocationRequest.create().apply {
+        interval = 30
+        fastestInterval = 10
+        priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+        maxWaitTime = 60
+    }
+
+    private var locationCallback: LocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            val locationList = locationResult.locations
+            if (locationList.isNotEmpty()) {
+                //The last location in the list is the newest
+                val location = locationList.last()
+
+                Toast.makeText(
+                    requireContext(),
+                    "Got Location: " + location.latitude,
+                    Toast.LENGTH_LONG
+                )
+                    .show()
+                Log.d("onLocationRes", "onLocationResult: ${location},${location.latitude} ${location.longitude}")
+            }
+        }
+    }
+
     @SuppressLint("WrongConstant")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,15 +104,29 @@ class HomeFragment : Fragment() {
 
         recyclerView = binding.rvHomes
         val btnPost = binding.fab
-        imageList2.add(SlideModel(R.drawable.tractorimg,ScaleTypes.CENTER_INSIDE))
-        imageList.add(SlideModel(R.drawable.timg,ScaleTypes.CENTER_INSIDE))
-        imageList.add(SlideModel(R.drawable.tt,ScaleTypes.CENTER_INSIDE))
-        imageList.add(SlideModel(R.drawable.tractorimg,ScaleTypes.CENTER_INSIDE))
         val session = PreferenceConnector.readString(context,PreferenceConnector.profilestatus,"")
         if (flagGetAll) {
             binding.pbHome.visibility = View.VISIBLE
             getHomeData(session)
         }
+        binding.cvLocation.setOnClickListener {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ){
+                checkLocationPermission()
+            }else{
+                fusedLocationProvider?.requestLocationUpdates(
+                    locationRequest,
+                    locationCallback,
+                    null
+                )
+            }
+        }
+        fusedLocationProvider = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        checkLocationPermission()
         binding.rvHomes.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 addDataOnScroll(session)
@@ -92,6 +139,7 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayout.VERTICAL, false)
         adapter = HomeAdapter(requireActivity(), list)
 
+        getWeatherData("d","d")
         btnPost.setOnClickListener{
             startActivity(Intent(requireActivity(),PostActivity::class.java))
         }
@@ -356,8 +404,213 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private fun getWeatherData(latitude:String,longitude:String){
+        val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
+        val call: Call<WeatherModel> = service.weathers(language = "hi-IN","26.9110671","75.7443329")
+        try {
+            call.enqueue(object  : retrofit2.Callback<WeatherModel>{
+                @SuppressLint("SetTextI18n")
+                override fun onResponse(
+                    call: Call<WeatherModel>,
+                    response: Response<WeatherModel>
+                ) {
+                     val responseBody = response.body()!!
+                    if (responseBody.city.locale.locale3 != "null") {
+                        binding.tvCity.text = responseBody.city.locale.locale2 +","+ responseBody.city.locale.locale3
+                    }
+                    if (responseBody.city.locale.locale4 != "null"){
+                        binding.tvCity.text = responseBody.city.locale.locale2 +","+ responseBody.city.locale.locale3 +","+responseBody.city.locale.locale4
+                    }
+                    Log.w("OnWeatherRes", "onResponse: ${response.body()}")
+                }
+
+                override fun onFailure(call: Call<WeatherModel>, t: Throwable) {
+                    Log.w("OnWeatherResFail", "onResponse: ${t.message}")
+
+                }
+            })
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
+    }
+
+//
+//    override fun onResume() {
+//        super.onResume()
+//        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+//            == PackageManager.PERMISSION_GRANTED
+//        ) {
+//
+//            fusedLocationProvider?.requestLocationUpdates(
+//                locationRequest,
+//                locationCallback,
+//                Looper.getMainLooper()
+//            )
+//        }
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        if (ContextCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            )
+//            == PackageManager.PERMISSION_GRANTED
+//        ) {
+//
+//            fusedLocationProvider?.removeLocationUpdates(locationCallback)
+//        }
+//    }
 
 
+    private fun checkLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Location Permission Needed")
+                    .setMessage("This app needs the Location permission, please accept to use location functionality")
+                    .setPositiveButton(
+                        "OK"
+                    ) { _, _ ->
+                        //Prompt the user once explanation has been shown
+                        requestLocationPermission()
+                    }
+                    .create()
+                    .show()
+            } else {
+                // No explanation needed, we can request the permission.
+                requestLocationPermission()
+            }
+        } else {
+//            checkBackgroundLocation()
+        }
+    }
+
+//    private fun checkBackgroundLocation() {
+//        if (ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            requestBackgroundLocationPermission()
+//        }
+//    }
+
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+            ),
+            MY_PERMISSIONS_REQUEST_LOCATION
+        )
+    }
+
+//    private fun requestBackgroundLocationPermission() {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            ActivityCompat.requestPermissions(
+//                requireActivity(),
+//                arrayOf(
+//                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+//                ),
+//                MY_PERMISSIONS_REQUEST_BACKGROUND_LOCATION
+//            )
+//        } else {
+//            ActivityCompat.requestPermissions(
+//                requireActivity(),
+//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+//                MY_PERMISSIONS_REQUEST_LOCATION
+//            )
+//        }
+//    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        when (requestCode) {
+            MY_PERMISSIONS_REQUEST_LOCATION -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        fusedLocationProvider?.requestLocationUpdates(
+                            locationRequest,
+                            locationCallback,
+                            null
+                        )
+
+                        // Now check background location
+//                        checkBackgroundLocation()
+                        checkLocationPermission()
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(requireContext(), "permission denied", Toast.LENGTH_LONG).show()
+                }
+                return
+            }
+            MY_PERMISSIONS_REQUEST_BACKGROUND_LOCATION -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        fusedLocationProvider?.requestLocationUpdates(
+                            locationRequest,
+                            locationCallback,
+                            null
+                        )
+
+                        Toast.makeText(
+                            requireContext(),
+                            "Granted Background Location Permission",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(requireContext(), "permission denied", Toast.LENGTH_LONG).show()
+                }
+                return
+
+            }
+        }
+    }
+
+    companion object {
+        private const val MY_PERMISSIONS_REQUEST_LOCATION = 99
+        private const val MY_PERMISSIONS_REQUEST_BACKGROUND_LOCATION = 66
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

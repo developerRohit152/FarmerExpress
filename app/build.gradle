@@ -83,4 +83,7 @@ dependencies {
 //    RazorPay
     implementation 'com.razorpay:checkout:1.6.11'
 
+//    Android Location
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
 }

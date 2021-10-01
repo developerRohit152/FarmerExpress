@@ -138,6 +138,14 @@ interface ApiInterface {
     ): Call<PollSelectedModel>
 
 
+    @GET("other/weather")
+    fun weathers(
+        @Query("language") language : String,
+        @Query("latitude") latitude : String?,
+        @Query("longitude") longitude : String,
+    ): Call<WeatherModel>
+
+
 companion object{
     const val PAY_KEY = "de41dd-569a6e-f86ef6-0ec821-4c8785"
 }

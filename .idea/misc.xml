@@ -6,10 +6,11 @@
         <entry key="..\:/RNS/FarmerExpress/app/src/main/res/drawable-v24/progress_track.xml" value="0.2203125" />
         <entry key="..\:/RNS/FarmerExpress/app/src/main/res/drawable/poll_selected_design.xml" value="0.2203125" />
         <entry key="..\:/RNS/FarmerExpress/app/src/main/res/layout/activity_comment.xml" value="0.18" />
+        <entry key="..\:/RNS/FarmerExpress/app/src/main/res/layout/fragment_homes.xml" value="0.25" />
         <entry key="..\:/RNS/FarmerExpress/app/src/main/res/layout/fragment_recharge.xml" value="0.20416666666666666" />
         <entry key="..\:/RNS/FarmerExpress/app/src/main/res/layout/recharge_design.xml" value="0.20416666666666666" />
         <entry key="..\:/RNS/FarmerExpress/app/src/main/res/layout/recycler_home_design.xml" value="0.20416666666666666" />
-        <entry key="..\:/RNS/FarmerExpress/app/src/main/res/layout/recycler_home_poll_design.xml" value="0.33" />
+        <entry key="..\:/RNS/FarmerExpress/app/src/main/res/layout/recycler_home_poll_design.xml" value="0.25" />
         <entry key="..\:/RNS/FarmerExpress/app/src/main/res/layout/recycler_newa_item.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FarmerExpress/app/src/main/res/drawable/btn_login_bg.xml" value="0.2890625" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FarmerExpress/app/src/main/res/drawable/play.xml" value="0.2890625" />
@@ -25,5 +26,5 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="16" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="16" project-jdk-type="JavaSDK" />
 </project>
