@@ -86,4 +86,7 @@ dependencies {
 //    Android Location
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
+//    SVG Image Loader
+    implementation 'com.github.ar-android:AndroidSvgLoader:1.0.0'
+
 }

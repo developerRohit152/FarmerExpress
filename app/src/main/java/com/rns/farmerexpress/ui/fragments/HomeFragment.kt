@@ -5,9 +5,13 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,6 +25,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ahmadrosid.svgloader.SvgLoader
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.google.android.gms.location.*
@@ -34,7 +39,11 @@ import com.rns.farmerexpress.apihandler.ApiInterface
 import com.rns.farmerexpress.commonUtility.PreferenceConnector
 import com.rns.farmerexpress.databinding.FragmentHomesBinding
 import com.rns.farmerexpress.model.*
+import com.rns.farmerexpress.ui.activities.LoginActivity
+import com.rns.farmerexpress.ui.activities.MainActivity
 import com.rns.farmerexpress.ui.activities.PostActivity
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.fragment_all_news.view.*
 import kotlinx.android.synthetic.main.fragment_homes.*
 import org.json.JSONArray
@@ -49,13 +58,14 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomesBinding? = null
     private lateinit var  recyclerView : RecyclerView
-     var list: ArrayList<PostDatas> = ArrayList()
+    var list: ArrayList<PostDatas> = ArrayList()
     lateinit var adapter: HomeAdapter
     var snackbar: Snackbar? = null
     lateinit var layoutManager: LinearLayoutManager
     var notLoading = true
     var count = 2
     var flagGetAll = true
+    var getWeatherDatas = true
 
 
 
@@ -74,18 +84,27 @@ class HomeFragment : Fragment() {
 
     private var locationCallback: LocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
+            if (getWeatherDatas) {
             val locationList = locationResult.locations
-            if (locationList.isNotEmpty()) {
-                //The last location in the list is the newest
-                val location = locationList.last()
+                if (locationList.isNotEmpty()) {
+                    //The last location in the list is the newest
+                    val location = locationList.last()
 
-                Toast.makeText(
-                    requireContext(),
-                    "Got Location: " + location.latitude,
-                    Toast.LENGTH_LONG
-                )
-                    .show()
-                Log.d("onLocationRes", "onLocationResult: ${location},${location.latitude} ${location.longitude}")
+//                Toast.makeText(
+//                    requireContext(),
+//                    "Got Location: " + location.latitude,
+//                    Toast.LENGTH_LONG
+//                )
+//                    .show()
+                    getWeatherData(location.latitude.toString(), location.longitude.toString())
+                    binding.tvLocAcc.visibility = View.GONE
+                    binding.cvLocation.visibility = View.VISIBLE
+                    Log.d(
+                        "onLocationRes",
+                        "onLocationResult: ${location},${location.latitude} ${location.longitude}"
+                    )
+                    getWeatherDatas = false
+                }
             }
         }
     }
@@ -109,24 +128,13 @@ class HomeFragment : Fragment() {
             binding.pbHome.visibility = View.VISIBLE
             getHomeData(session)
         }
-        binding.cvLocation.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ){
-                checkLocationPermission()
-            }else{
-                fusedLocationProvider?.requestLocationUpdates(
-                    locationRequest,
-                    locationCallback,
-                    null
-                )
-            }
-        }
+
+
+       binding.cvLocation.visibility = View.GONE
+        binding.tvLocAcc.visibility = View.VISIBLE
+
         fusedLocationProvider = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        checkLocationPermission()
         binding.rvHomes.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 addDataOnScroll(session)
@@ -139,7 +147,7 @@ class HomeFragment : Fragment() {
             LinearLayoutManager(requireContext(), LinearLayout.VERTICAL, false)
         adapter = HomeAdapter(requireActivity(), list)
 
-        getWeatherData("d","d")
+
         btnPost.setOnClickListener{
             startActivity(Intent(requireActivity(),PostActivity::class.java))
         }
@@ -150,7 +158,7 @@ class HomeFragment : Fragment() {
     private fun addDataOnScroll(session: String) {
         if (notLoading && layoutManager.findLastCompletelyVisibleItemPosition() == list.size - 1) {
             list.add(PostDatas(HomeAdapter.VIEW_TYPE_LOADING, 0, 0, "", "","","","","","","","",
-                                                        0,"","",1,"","","",""))
+                0,"","",1,"","","",""))
 
             adapter.notifyItemInserted(list.size - 1)
             notLoading = false
@@ -391,11 +399,13 @@ class HomeFragment : Fragment() {
                     }
                     flagGetAll = false
                     binding.pbHome.visibility = View.INVISIBLE
-                    Log.d("OnPostRes", "onResponse: ${responseBody?.post}")
+//                    Log.d("OnPostRes", "onResponse: ${responseBody?.post}")
+                    checkLocationPermission()
+
                 }
 
                 override fun onFailure(call: Call<GetPostData>, t: Throwable) {
-                    Log.d("OnPostResFail", "onResponse: ${t.message}")
+//                    Log.d("OnPostResFail", "onResponse: ${t.message}")
                 }
 
             })
@@ -406,7 +416,9 @@ class HomeFragment : Fragment() {
 
     private fun getWeatherData(latitude:String,longitude:String){
         val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
-        val call: Call<WeatherModel> = service.weathers(language = "hi-IN","26.9110671","75.7443329")
+//        val call: Call<WeatherModel> = service.weathers(language = "hi-IN","18.530000","73.85299")
+        val call: Call<WeatherModel> = service.weathers(language = "hi-IN",latitude,longitude)
+//        val call: Call<WeatherModel> = service.weathers(language = "hi-IN","40.728999","-73.98699")
         try {
             call.enqueue(object  : retrofit2.Callback<WeatherModel>{
                 @SuppressLint("SetTextI18n")
@@ -414,14 +426,54 @@ class HomeFragment : Fragment() {
                     call: Call<WeatherModel>,
                     response: Response<WeatherModel>
                 ) {
-                     val responseBody = response.body()!!
-                    if (responseBody.city.locale.locale3 != "null") {
-                        binding.tvCity.text = responseBody.city.locale.locale2 +","+ responseBody.city.locale.locale3
+                    val responseBody = response.body()!!
+
+                    if (responseBody.city.locale.locale4 != null) {
+                        if (responseBody.city.locale.locale3 != null) {
+
+                            binding.tvCity.text =
+                                responseBody.city.locale.locale4 + "," + responseBody.city.locale.locale3 + "," + responseBody.city.locale.locale2
+                        }else {
+                            binding.tvCity.text =
+                                responseBody.city.locale.locale4 +","+responseBody.city.locale.locale2
+                        }
+                    }else if (responseBody.city.locale.locale3 != null) {
+
+                        binding.tvCity.text =
+                            responseBody.city.locale.locale3 + "," + responseBody.city.locale.locale2
+                    }else {
+                        binding.tvCity.text =
+                            responseBody.city.locale.locale2
                     }
-                    if (responseBody.city.locale.locale4 != "null"){
-                        binding.tvCity.text = responseBody.city.locale.locale2 +","+ responseBody.city.locale.locale3 +","+responseBody.city.locale.locale4
+                    val weather = responseBody.weather
+                    binding.tvTemp.text = weather.temperature + "°C"
+                    binding.tvFeelTemp.text = "महसूस "+weather.temperatureFeelsLike + "°C"
+                    binding.tvMax.text = "अधिकतम  " + weather.temperatureMax24Hour + "°C"
+                    binding.tvMin.text = "न्यूनतम " + weather.temperatureMin24Hour + "°C"
+                    binding.tvWind.text = "हवा " + weather.windSpeed + " किमी/घंटे  "
+                    binding.tvCloudP.text = weather.cloudCoverPhrase
+                    binding.tvDay.text = weather.dayOfWeek
+                    if (weather.dayOrNight == "D"){
+                        binding.tvDayOrNight.text = "दिन"
+                    }else{
+                        binding.tvDayOrNight.text = "रात"
                     }
-                    Log.w("OnWeatherRes", "onResponse: ${response.body()}")
+                    binding.tbHumidity.text = "नमी " + weather.relativeHumidity+"%"
+                    binding.tvWxPL.text = weather.wxPhraseLong
+//                    Picasso.get().load(weather.icon1).placeholder(R.drawable.imageplaceholder)
+//                        .error(R.drawable.imageplaceholder).into(binding.ivBg)
+//                    SvgLoader.pluck()
+//                        .with(activity)
+//                        .setPlaceHolder(R.drawable.imageplaceholder, R.drawable.imageplaceholder)
+//                        .load(weather.icon2, ivBg)
+                    SvgLoader.pluck()
+                        .with(activity)
+                        .setPlaceHolder(R.drawable.imageplaceholder, R.drawable.imageplaceholder)
+                        .load(weather.icon2, ivBgL)
+                    binding.tvLocAcc.visibility = View.GONE
+                    binding.cvLocation.visibility = View.VISIBLE
+
+
                 }
 
                 override fun onFailure(call: Call<WeatherModel>, t: Throwable) {
@@ -434,33 +486,8 @@ class HomeFragment : Fragment() {
         }
     }
 
-//
-//    override fun onResume() {
-//        super.onResume()
-//        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//            == PackageManager.PERMISSION_GRANTED
-//        ) {
-//
-//            fusedLocationProvider?.requestLocationUpdates(
-//                locationRequest,
-//                locationCallback,
-//                Looper.getMainLooper()
-//            )
-//        }
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        if (ContextCompat.checkSelfPermission(
-//                requireContext(),
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            )
-//            == PackageManager.PERMISSION_GRANTED
-//        ) {
-//
-//            fusedLocationProvider?.removeLocationUpdates(locationCallback)
-//        }
-//    }
+
+
 
 
     private fun checkLocationPermission() {
@@ -469,24 +496,20 @@ class HomeFragment : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     requireActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION
                 )
             ) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
                 AlertDialog.Builder(requireContext())
-                    .setTitle("Location Permission Needed")
-                    .setMessage("This app needs the Location permission, please accept to use location functionality")
+                    .setTitle("लोकैशन की पर्मिशन चाहिए")
+                    .setMessage("मौसम की जानकारी के लिए ऐप को लोकैशन की पर्मिशन दे ")
                     .setPositiveButton(
-                        "OK"
+                        "ओके"
                     ) { _, _ ->
                         //Prompt the user once explanation has been shown
                         requestLocationPermission()
-                    }
+                    }.setCancelable(false)
                     .create()
                     .show()
             } else {
@@ -494,47 +517,45 @@ class HomeFragment : Fragment() {
                 requestLocationPermission()
             }
         } else {
-//            checkBackgroundLocation()
+            requestLocationPermission()
         }
     }
 
-//    private fun checkBackgroundLocation() {
-//        if (ActivityCompat.checkSelfPermission(
-//                requireContext(),
-//                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            requestBackgroundLocationPermission()
-//        }
-//    }
+
 
     private fun requestLocationPermission() {
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-            ),
-            MY_PERMISSIONS_REQUEST_LOCATION
-        )
+        ActivityCompat.requestPermissions(requireActivity(),arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,),MY_PERMISSIONS_REQUEST_LOCATION)
+        val  mRunnable = Runnable {
+            if (ActivityCompat.checkSelfPermission(
+                    this.requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ){
+                binding.cvLocation.visibility = View.GONE
+                binding.tvLocAcc.visibility = View.GONE
+                binding.llWeather.visibility = View.GONE
+            }else{
+                fusedLocationProvider?.requestLocationUpdates(
+                    locationRequest,
+                    locationCallback,
+                    null
+                )
+                binding.cvLocation.visibility = View.GONE
+                Toast.makeText(
+                    requireContext(),
+                    "लोकैशन ली जा रही हैं ",
+                    Toast.LENGTH_LONG
+                )
+                    .show()
+            }
+        }
+        val mHandler = Handler()
+        mHandler.postDelayed(mRunnable, 3000)
+
+
     }
 
-//    private fun requestBackgroundLocationPermission() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//            ActivityCompat.requestPermissions(
-//                requireActivity(),
-//                arrayOf(
-//                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
-//                ),
-//                MY_PERMISSIONS_REQUEST_BACKGROUND_LOCATION
-//            )
-//        } else {
-//            ActivityCompat.requestPermissions(
-//                requireActivity(),
-//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-//                MY_PERMISSIONS_REQUEST_LOCATION
-//            )
-//        }
-//    }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -562,6 +583,8 @@ class HomeFragment : Fragment() {
                         // Now check background location
 //                        checkBackgroundLocation()
                         checkLocationPermission()
+                        binding.tvLocAcc.visibility = View.GONE
+                        binding.cvLocation.visibility = View.VISIBLE
                     }
 
                 } else {
@@ -588,7 +611,8 @@ class HomeFragment : Fragment() {
                             locationCallback,
                             null
                         )
-
+                        binding.tvLocAcc.visibility = View.GONE
+                        binding.cvLocation.visibility = View.VISIBLE
                         Toast.makeText(
                             requireContext(),
                             "Granted Background Location Permission",
@@ -612,8 +636,12 @@ class HomeFragment : Fragment() {
         private const val MY_PERMISSIONS_REQUEST_BACKGROUND_LOCATION = 66
     }
 
+
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+//        SvgLoader.pluck().close()
     }
 }

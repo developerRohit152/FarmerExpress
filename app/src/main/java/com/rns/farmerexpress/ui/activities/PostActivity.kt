@@ -115,17 +115,20 @@ class PostActivity : AppCompatActivity() {
                             bg = ""
                             postData(session.toString(),types,editText.text.toString(),images,polls,tags,number,bg)
                             pbPost.visibility = View.VISIBLE
+                            btnPost.visibility = View.GONE
                             clParentPost.visibility = View.GONE
                         }
                     } else if (types == "bg") {
                         images.add("blank")
                          postData(session.toString(),types,editText.text.toString(),images,polls,tags,number,bg)
                         pbPost.visibility = View.VISIBLE
+                        btnPost.visibility = View.GONE
                         clParentPost.visibility = View.GONE
 
                     } else {
                         bg = ""
                         postData(session.toString(),types,editText.text.toString(),images,polls,tags,number,bg)
+                        btnPost.visibility = View.GONE
                         pbPost.visibility = View.VISIBLE
                         clParentPost.visibility = View.GONE
                     }
@@ -301,6 +304,9 @@ class PostActivity : AppCompatActivity() {
                     if (responseBody?.status == "001"){
                     Toast.makeText(this@PostActivity, "पोस्ट सफलतापूर्वक पोस्ट हुई ", Toast.LENGTH_LONG).show()
                         editText.text.clear()
+                        btnPost.visibility = View.VISIBLE
+                        startActivity(Intent(this@PostActivity,MainActivity::class.java))
+                        finish()
                     }else{
                         Toast.makeText(this@PostActivity,"पोस्ट अपलोड नहीं हुई, कुछ देर बाद वापस कोशिश करे",Toast.LENGTH_LONG).show()
                     }

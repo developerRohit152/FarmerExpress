@@ -29,6 +29,7 @@ data class Weathers(
     val temperatureMin24Hour : String,
     val windSpeed : String,
     val wxPhraseLong : String,
+    val icon2 : String
 
 )
 
