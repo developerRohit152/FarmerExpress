@@ -104,7 +104,24 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
             }
             userName.text = postDatas.user_name
             location.text = list[position].location
-            contentc.text = list[position].discription + "\n" + tagList.toString()
+            if(tagList.size == 0){
+            contentc.text = list[position].discription
+            }else if (tagList.size == 1){
+                contentc.text = list[position].discription + "\n"+tagList[0]
+
+            }else if (tagList.size == 2){
+                contentc.text = list[position].discription + "\n"+tagList[0] +"," + tagList[1]
+
+            }else if (tagList.size == 3){
+                contentc.text = list[position].discription + "\n"+tagList[0] +"," + tagList[1]+"," + tagList[2]
+
+            }else if (tagList.size == 4){
+                contentc.text = list[position].discription + "\n"+tagList[0] +"," + tagList[1]+"," + tagList[2]+"," + tagList[3]
+
+            }else if (tagList.size == 5){
+                contentc.text = list[position].discription + "\n"+tagList[0] +"," + tagList[1]+"," + tagList[2]+"," + tagList[3]+"," + tagList[4]
+
+            }
             timec.text = list[position].date
             likeCount.text = "${list[position].likes}" + " लाइक"
             commentCount.text = list[position].comments + " कमेंट्स "
@@ -232,7 +249,24 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
             }
             userName.text = postDatas.user_name
             location.text = list[position].location
-            contentc.text = list[position].discription +"\n${tagList}"
+            if(tagList.size == 0){
+                contentc.text = list[position].discription
+            }else if (tagList.size == 1){
+                contentc.text = list[position].discription + "\n"+tagList[0]
+
+            }else if (tagList.size == 2){
+                contentc.text = list[position].discription + "\n"+tagList[0] +"," + tagList[1]
+
+            }else if (tagList.size == 3){
+                contentc.text = list[position].discription + "\n"+tagList[0] +"," + tagList[1]+"," + tagList[2]
+
+            }else if (tagList.size == 4){
+                contentc.text = list[position].discription + "\n"+tagList[0] +"," + tagList[1]+"," + tagList[2]+"," + tagList[3]
+
+            }else if (tagList.size == 5){
+                contentc.text = list[position].discription + "\n"+tagList[0] +"," + tagList[1]+"," + tagList[2]+"," + tagList[3]+"," + tagList[4]
+
+            }
             timec.text = list[position].date
             likeCount.text = "${list[position].likes}" + " लाइक"
             commentCount.text = list[position].comments + " कमेंट्स "
@@ -369,56 +403,6 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
         }
     }
 
-    @SuppressLint("ResourceAsColor")
-    private fun changeSeekBarColor(seekbar2: SeekBar?, seekbar3: SeekBar?, seekbar4: SeekBar?, seekbar5: SeekBar?) {
-        seekbar2?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
-        seekbar3?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
-        seekbar4?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
-        seekbar5?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
-    }
-    private fun hideSeekbar(seekbar1: SeekBar?,seekbar2: SeekBar?,seekbar3: SeekBar?,seekbar4: SeekBar?,seekbar5: SeekBar?) {
-        seekbar1?.visibility = View.INVISIBLE
-        seekbar2?.visibility = View.INVISIBLE
-        seekbar3?.visibility = View.INVISIBLE
-        seekbar4?.visibility = View.INVISIBLE
-        seekbar5?.visibility = View.INVISIBLE
-    }
-    private fun showSeekbar(seekbar1: SeekBar?,seekbar2: SeekBar?,seekbar3: SeekBar?,seekbar4: SeekBar?,seekbar5: SeekBar?) {
-        seekbar1?.visibility = View.VISIBLE
-        seekbar2?.visibility = View.VISIBLE
-        seekbar3?.visibility = View.VISIBLE
-        seekbar4?.visibility = View.VISIBLE
-        seekbar5?.visibility = View.VISIBLE
-    }
-    private fun hideTvPercent(tvPercent1: TextView?,tvPercent2: TextView?,tvPercent3: TextView?,tvPercent4: TextView?,tvPercent5: TextView?) {
-        tvPercent1?.visibility = View.INVISIBLE
-        tvPercent2?.visibility = View.INVISIBLE
-        tvPercent3?.visibility = View.INVISIBLE
-        tvPercent4?.visibility = View.INVISIBLE
-        tvPercent5?.visibility = View.INVISIBLE
-    }
-    private fun showTvPercent(tvPercent1: TextView?,tvPercent2: TextView?,tvPercent3: TextView?,tvPercent4: TextView?,tvPercent5: TextView?) {
-        tvPercent1?.visibility = View.VISIBLE
-        tvPercent2?.visibility = View.VISIBLE
-        tvPercent3?.visibility = View.VISIBLE
-        tvPercent4?.visibility = View.VISIBLE
-        tvPercent5?.visibility = View.VISIBLE
-    }
-    private fun hideClParent(clParent:ConstraintLayout?,clParent2:ConstraintLayout?,clParent3:ConstraintLayout?,clParent4:ConstraintLayout?,clParent5:ConstraintLayout?) {
-        clParent?.background = null
-        clParent2?.background = null
-        clParent3?.background = null
-        clParent4?.background = null
-        clParent5?.background = null
-
-    }
-    private fun showClParent(clParent: ConstraintLayout?,clParent2: ConstraintLayout?,clParent3: ConstraintLayout?,clParent4: ConstraintLayout?,clParent5: ConstraintLayout?) {
-        clParent?.setBackgroundResource(R.drawable.rzp_border)
-        clParent2?.setBackgroundResource(R.drawable.rzp_border)
-        clParent3?.setBackgroundResource(R.drawable.rzp_border)
-        clParent4?.setBackgroundResource(R.drawable.rzp_border)
-        clParent5?.setBackgroundResource(R.drawable.rzp_border)
-    }
 
     private inner class BGViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
@@ -454,7 +438,23 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
             userName.text = postDatas.user_name
             location.text = list[position].location
             timec.text = list[position].date
-            contentc.text = tagList.toString()
+            if(tagList.size == 0){
+            }else if (tagList.size == 1){
+                contentc.text = tagList[0]
+
+            }else if (tagList.size == 2){
+                contentc.text = tagList[0] +", " + tagList[1]
+
+            }else if (tagList.size == 3){
+                contentc.text = tagList[0] +", " + tagList[1]+", " + tagList[2]
+
+            }else if (tagList.size == 4){
+                contentc.text = tagList[0] +", " + tagList[1]+", " + tagList[2]+", " + tagList[3]
+
+            }else if (tagList.size == 5){
+                contentc.text = tagList[0] +", " + tagList[1]+", " + tagList[2]+", " + tagList[3]+", " + tagList[4]
+
+            }
             likeCount.text = "${list[position].likes}" + " लाइक"
             commentCount.text = list[position].comments + " कमेंट्स "
             shareCount.text = list[position].shares + " शेयर"
@@ -655,6 +655,59 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
 
         }
 
+    }
+
+
+
+    @SuppressLint("ResourceAsColor")
+    private fun changeSeekBarColor(seekbar2: SeekBar?, seekbar3: SeekBar?, seekbar4: SeekBar?, seekbar5: SeekBar?) {
+        seekbar2?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
+        seekbar3?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
+        seekbar4?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
+        seekbar5?.getProgressDrawable()?.setColorFilter(R.color.pollColor, PorterDuff.Mode.DST_IN)
+    }
+    private fun hideSeekbar(seekbar1: SeekBar?,seekbar2: SeekBar?,seekbar3: SeekBar?,seekbar4: SeekBar?,seekbar5: SeekBar?) {
+        seekbar1?.visibility = View.INVISIBLE
+        seekbar2?.visibility = View.INVISIBLE
+        seekbar3?.visibility = View.INVISIBLE
+        seekbar4?.visibility = View.INVISIBLE
+        seekbar5?.visibility = View.INVISIBLE
+    }
+    private fun showSeekbar(seekbar1: SeekBar?,seekbar2: SeekBar?,seekbar3: SeekBar?,seekbar4: SeekBar?,seekbar5: SeekBar?) {
+        seekbar1?.visibility = View.VISIBLE
+        seekbar2?.visibility = View.VISIBLE
+        seekbar3?.visibility = View.VISIBLE
+        seekbar4?.visibility = View.VISIBLE
+        seekbar5?.visibility = View.VISIBLE
+    }
+    private fun hideTvPercent(tvPercent1: TextView?,tvPercent2: TextView?,tvPercent3: TextView?,tvPercent4: TextView?,tvPercent5: TextView?) {
+        tvPercent1?.visibility = View.INVISIBLE
+        tvPercent2?.visibility = View.INVISIBLE
+        tvPercent3?.visibility = View.INVISIBLE
+        tvPercent4?.visibility = View.INVISIBLE
+        tvPercent5?.visibility = View.INVISIBLE
+    }
+    private fun showTvPercent(tvPercent1: TextView?,tvPercent2: TextView?,tvPercent3: TextView?,tvPercent4: TextView?,tvPercent5: TextView?) {
+        tvPercent1?.visibility = View.VISIBLE
+        tvPercent2?.visibility = View.VISIBLE
+        tvPercent3?.visibility = View.VISIBLE
+        tvPercent4?.visibility = View.VISIBLE
+        tvPercent5?.visibility = View.VISIBLE
+    }
+    private fun hideClParent(clParent:ConstraintLayout?,clParent2:ConstraintLayout?,clParent3:ConstraintLayout?,clParent4:ConstraintLayout?,clParent5:ConstraintLayout?) {
+        clParent?.background = null
+        clParent2?.background = null
+        clParent3?.background = null
+        clParent4?.background = null
+        clParent5?.background = null
+
+    }
+    private fun showClParent(clParent: ConstraintLayout?,clParent2: ConstraintLayout?,clParent3: ConstraintLayout?,clParent4: ConstraintLayout?,clParent5: ConstraintLayout?) {
+        clParent?.setBackgroundResource(R.drawable.rzp_border)
+        clParent2?.setBackgroundResource(R.drawable.rzp_border)
+        clParent3?.setBackgroundResource(R.drawable.rzp_border)
+        clParent4?.setBackgroundResource(R.drawable.rzp_border)
+        clParent5?.setBackgroundResource(R.drawable.rzp_border)
     }
 
 

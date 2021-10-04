@@ -1,13 +1,13 @@
 package com.rns.farmerexpress.model
 
-data class GetPostData(
+data class GetSinglePost(
   val status : String,
   val message: String,
-  val post : List<PostDatas>
+  val post : List<SinglePost>
 
 )
 
-data class PostDatas(
+data class SinglePost(
     val viewType : Int,
     val post_id : Int,
     val user_id : Int,

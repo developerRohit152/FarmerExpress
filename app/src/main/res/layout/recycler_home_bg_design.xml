@@ -234,7 +234,7 @@
                 android:layout_weight="1"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="10dp"
                 >
 
                 <EditText

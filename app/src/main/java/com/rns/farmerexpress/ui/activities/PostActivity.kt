@@ -104,7 +104,7 @@ class PostActivity : AppCompatActivity() {
 
                 }else {
                     if(tags.isNullOrEmpty()){
-                         tags.add("#"+PreferenceConnector.readString(this@PostActivity,PreferenceConnector.stateName,"").toString().trim())
+//                         tags.add("#"+PreferenceConnector.readString(this@PostActivity,PreferenceConnector.stateName,"").toString().trim())
                     }
                     if (flag) {
                         if (etOption1.text.isEmpty() || etOption2.text.isEmpty()) {

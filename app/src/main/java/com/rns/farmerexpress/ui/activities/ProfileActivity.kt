@@ -184,7 +184,7 @@ class ProfileActivity : AppCompatActivity() , AdapterView.OnItemSelectedListener
                         override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                             val i = getStateDatas.get(p2).StateCode
                             statePos = p2
-                            Toast.makeText(this@ProfileActivity,p2.toString(), Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(this@ProfileActivity,p2.toString(), Toast.LENGTH_SHORT).show()
 
                             getDisName.clear()
                             getDist(i)

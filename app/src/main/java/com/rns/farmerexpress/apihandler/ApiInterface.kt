@@ -145,6 +145,12 @@ interface ApiInterface {
         @Query("longitude") longitude : String,
     ): Call<WeatherModel>
 
+    @FormUrlEncoded
+    @POST("post/pick")
+    fun getSinglePost(
+        @Field("session") session : String,
+        @Field("post_id") postId : String?,
+    ): Call<GetSinglePost>
 
 companion object{
     const val PAY_KEY = "de41dd-569a6e-f86ef6-0ec821-4c8785"
