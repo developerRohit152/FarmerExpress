@@ -581,6 +581,7 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
     private fun startCommentActivity(postID: Int){
         val i = Intent(activity,CommentActivity::class.java)
         i.putExtra("postId",postID.toString())
+        PreferenceConnector.writeString(activity,PreferenceConnector.ONBACKSINGLEMAIN,"False")
         activity.startActivity(i)
     }
     private fun sharePost(disc : String,postID: Int){
@@ -716,6 +717,8 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
             activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
+
+
 }
 
 

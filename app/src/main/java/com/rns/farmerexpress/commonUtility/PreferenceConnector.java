@@ -14,12 +14,12 @@ public class PreferenceConnector {
 	public static final String 	profilestatus 					= "profilestatus";
 	public static final String 	profileName 					= "profilename";
 	public static final String 	profilePic 					= "profilepic";
-	public static final String 	money 					= "money";
+	public static final String 	POSTIDSINGLE 					= "money";
 	public static final String 	stateName 					= "state";
 	public static final String 	opName 					= "opnamw";
 	public static final String 	USER_PHONE 					= "userPhone";
 	public static final String 	MOBILE 					= "mobile";
-	public static final String 	SHARE 					= "True";
+	public static final String 	ONBACKSINGLEMAIN 					= "onback";
 
 
 

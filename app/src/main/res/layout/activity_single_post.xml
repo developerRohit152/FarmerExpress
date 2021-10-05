@@ -11,7 +11,9 @@
         android:elevation="5dp"
 
         >
+
         <LinearLayout
+            android:id="@+id/llSinglePost"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp"
@@ -488,6 +490,7 @@
                         android:layout_height="wrap_content"
                         android:background="#CDCDCD"
                         android:hint="कमेंट्स लिखे"
+                        android:editable="false"
                         android:minHeight="35dp"
                         android:paddingLeft="10dp"
                         android:textStyle="bold"
@@ -505,5 +508,13 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/pbSinglePost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

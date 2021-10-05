@@ -1,14 +1,17 @@
 package com.rns.farmerexpress.ui.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
@@ -17,10 +20,9 @@ import com.rns.farmerexpress.adapter.HomeAdapter
 import com.rns.farmerexpress.apihandler.APIClient
 import com.rns.farmerexpress.apihandler.ApiInterface
 import com.rns.farmerexpress.commonUtility.PreferenceConnector
-import com.rns.farmerexpress.model.GetPostData
-import com.rns.farmerexpress.model.GetSinglePost
-import com.rns.farmerexpress.model.PostDatas
+import com.rns.farmerexpress.model.*
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_post_activiyt.view.*
 import kotlinx.android.synthetic.main.activity_single_post.*
 import kotlinx.android.synthetic.main.fragment_homes.*
 import kotlinx.android.synthetic.main.recycler_home_bg_design.view.*
@@ -28,6 +30,7 @@ import kotlinx.android.synthetic.main.recycler_home_design.view.*
 import kotlinx.android.synthetic.main.recycler_home_poll_design.view.*
 import org.json.JSONArray
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
@@ -35,16 +38,26 @@ class SinglePostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_post)
+        pbSinglePost.visibility = View.VISIBLE
+        llSinglePost.visibility = View.GONE
         val session = PreferenceConnector.readString(this,PreferenceConnector.profilestatus,"")
-        getHomeData(session)
+        val action: String? = intent?.action
+        val data: Uri? = intent?.data
+//        http://www.farmerexpress.rnsitsolutions.com/api/401
+        val postID = data.toString().substring(data.toString().lastIndexOf("/") + 1)
+        if (data != null) {
+         PreferenceConnector.writeString(this,PreferenceConnector.POSTIDSINGLE,postID)
+        }
+        getHomeData(session,PreferenceConnector.readString(this,PreferenceConnector.POSTIDSINGLE,""))
+//        Toast.makeText(this,postID,Toast.LENGTH_LONG).show()
 
     }
 
 
 
-    private fun getHomeData(session:String){
+    private fun getHomeData(session:String,postID: String){
         val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
-        val call: Call<GetSinglePost> = service.getSinglePost(session,"284")
+        val call: Call<GetSinglePost> = service.getSinglePost(session,postID)
         try {
             call.enqueue(object : retrofit2.Callback<GetSinglePost>{
                 @SuppressLint("WrongConstant", "SetTextI18n")
@@ -116,26 +129,26 @@ class SinglePostActivity : AppCompatActivity() {
                                     ivLike.setImageResource(R.drawable.ic_like_24)
                                     isLike = 0
                                     likeCounts--
-//                                    likes(postDatas.post_id,"like")
+                                    likes(data.post_id,"like")
                                 }else{
                                     ivLike.setImageResource(R.drawable.ic_round_thumb_up_24)
                                     isLike = 1
                                     likeCounts++
-//                                    likes(postDatas.post_id,"like")
+                                    likes(data.post_id,"like")
                                 }
                                 tvLike.text = "$likeCounts लाइक"
                             }
                             etCommentI.setOnClickListener {
-//                                startCommentActivity(postDatas.post_id)
+                                startCommentActivity(data.post_id)
                             }
                             llComment.setOnClickListener {
-//                                startCommentActivity(postDatas.post_id)
+                                startCommentActivity(data.post_id)
                             }
                             var share = true
                             var shareCounts : Int = data.shares.toInt()
                             llShare.setOnClickListener {
-//                                sharePost(postDatas.discription,postDatas.post_id)
-//                                likes(postDatas.post_id,"share")
+                                sharePost(data.discription,data.post_id)
+                                likes(data.post_id,"share")
                                 if(share) {
                                     shareCounts++
                                     tvShare.text = "$shareCounts शेयर "
@@ -146,6 +159,8 @@ class SinglePostActivity : AppCompatActivity() {
                             image_slider.visibility = View.VISIBLE
                             tvBG.visibility = View.GONE
                             llPoll.visibility = View.GONE
+                            pbSinglePost.visibility = View.GONE
+                            llSinglePost.visibility = View.VISIBLE
                         }
                         else if (data.type == "bg"){
 
@@ -156,7 +171,7 @@ class SinglePostActivity : AppCompatActivity() {
                             val tagList = ArrayList<String>()
 
                             try {
-                                val imgobj = JSONArray(postDatas.post_tags)
+                                val imgobj = JSONArray(data.post_tags)
                                 for (i in 0..5) {
                                     val imgArr = imgobj.getJSONObject(i)
                                     val fimg = imgArr.optString("tag")
@@ -165,76 +180,81 @@ class SinglePostActivity : AppCompatActivity() {
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }
-                            userName.text = postDatas.user_name
-                            location.text = list[position].location
-                            timec.text = list[position].date
+                            tvUserName.text = data.user_name
+                            tvLocation.text = data.location
+                            tvTime.text = data.date
                             if(tagList.size == 0){
                             }else if (tagList.size == 1){
-                                contentc.text = tagList[0]
+                                tvContent.text = tagList[0]
 
                             }else if (tagList.size == 2){
-                                contentc.text = tagList[0] +", " + tagList[1]
+                                tvContent.text = tagList[0] +", " + tagList[1]
 
                             }else if (tagList.size == 3){
-                                contentc.text = tagList[0] +", " + tagList[1]+", " + tagList[2]
+                                tvContent.text = tagList[0] +", " + tagList[1]+", " + tagList[2]
 
                             }else if (tagList.size == 4){
-                                contentc.text = tagList[0] +", " + tagList[1]+", " + tagList[2]+", " + tagList[3]
+                                tvContent.text = tagList[0] +", " + tagList[1]+", " + tagList[2]+", " + tagList[3]
 
                             }else if (tagList.size == 5){
-                                contentc.text = tagList[0] +", " + tagList[1]+", " + tagList[2]+", " + tagList[3]+", " + tagList[4]
+                                tvContent.text = tagList[0] +", " + tagList[1]+", " + tagList[2]+", " + tagList[3]+", " + tagList[4]
 
                             }
-                            likeCount.text = "${list[position].likes}" + " लाइक"
-                            commentCount.text = list[position].comments + " कमेंट्स "
-                            shareCount.text = list[position].shares + " शेयर"
-                            var likeCounts : Int = list[position].likes
-                            var isLike = postDatas.isLiked
-                            bg.text = postDatas.discription
-                            if (postDatas.color == "FFFFFFFF") {
-                                bg.setTextColor(Color.BLACK)
+                            tvLike.text = "${data.likes}" + " लाइक"
+                            tvComment.text = data.comments + " कमेंट्स "
+                            tvShare.text = data.shares + " शेयर"
+                            var likeCounts : Int = data.likes
+                            var isLike = data.isLiked
+                            tvBG.text = data.discription
+                            if (data.color == "FFFFFFFF") {
+                                tvBG.setTextColor(Color.BLACK)
                             }else{
-                                bg.setTextColor(Color.WHITE)
+                                tvBG.setTextColor(Color.WHITE)
                             }
-                            bg.setBackgroundColor(Color.parseColor("#" + postDatas.color))
+                            tvBG.setBackgroundColor(Color.parseColor("#" + data.color))
 
-                            if (postDatas.isLiked == 1){
-                                itemView.ivLikeB.setImageResource(R.drawable.ic_round_thumb_up_24)
+                            if (data.isLiked == 1){
+                                ivLike.setImageResource(R.drawable.ic_round_thumb_up_24)
                             }else{
-                                itemView.ivLikeB.setImageResource(R.drawable.ic_like_24)
+                                ivLike.setImageResource(R.drawable.ic_like_24)
                             }
 
-                            itemView.llLikeB.setOnClickListener {
+                            llLike.setOnClickListener {
                                 if (isLike == 1){
-                                    itemView.ivLikeB.setImageResource(R.drawable.ic_like_24)
+                                    ivLike.setImageResource(R.drawable.ic_like_24)
                                     isLike = 0
                                     likeCounts--
-                                    likes(postDatas.post_id,"like")
+                                    likes(data.post_id,"like")
                                 }else{
-                                    itemView.ivLikeB.setImageResource(R.drawable.ic_round_thumb_up_24)
+                                    ivLike.setImageResource(R.drawable.ic_round_thumb_up_24)
                                     isLike = 1
                                     likeCounts++
-                                    likes(postDatas.post_id,"like")
+                                    likes(data.post_id,"like")
                                 }
-                                likeCount.text = "$likeCounts लाइक"
+                                tvLike.text = "$likeCounts लाइक"
                             }
-                            itemView.etComment.setOnClickListener {
-                                startCommentActivity(postDatas.post_id)
+                            etCommentI.setOnClickListener {
+                                startCommentActivity(data.post_id)
                             }
-                            itemView.llCommentB.setOnClickListener {
-                                startCommentActivity(postDatas.post_id)
+                            llComment.setOnClickListener {
+                                startCommentActivity(data.post_id)
                             }
                             var share = true
-                            itemView.llShareB.setOnClickListener {
-                                sharePost(postDatas.discription,postDatas.post_id)
-                                var shareCounts : Int = postDatas.shares.toInt()
-                                likes(postDatas.post_id,"share")
+                            llShare.setOnClickListener {
+                                sharePost(data.discription,data.post_id)
+                                var shareCounts : Int = data.shares.toInt()
+                                likes(data.post_id,"share")
                                 if(share) {
                                     shareCounts++
-                                    shareCount.text = "$shareCounts शेयर "
+                                    tvShare.text = "$shareCounts शेयर "
                                     share = false
                                 }
                             }
+                            image_slider.visibility = View.GONE
+                            tvBG.visibility = View.VISIBLE
+                            llPoll.visibility = View.GONE
+                            pbSinglePost.visibility = View.GONE
+                            llSinglePost.visibility = View.VISIBLE
                         }else{
                             val tagList = ArrayList<String>()
                             val pollList = ArrayList<String>()
@@ -261,7 +281,7 @@ class SinglePostActivity : AppCompatActivity() {
                                     val polls = pollArr.optString("poll")
                                     val pollVal = pollObj.getJSONObject(i)
                                     val values = pollVal.optInt("value")
-//                    polls[4].toString()
+//                                    polls[4].toString()
                                     pollList.add(polls)
                                     pollListValue.add(values)
                                 }
@@ -271,8 +291,6 @@ class SinglePostActivity : AppCompatActivity() {
                             try {
                                 tvOption1.text = pollList[0]
                                 tvOption2.text = pollList[1]
-//                tvOption3.text = pollList[2]
-//                tvOption4.text = pollList[3]
                                 if (pollList.size>=3){
                                     cParent3.visibility = View.VISIBLE
                                     tvOption3.text = pollList[2]
@@ -332,26 +350,26 @@ class SinglePostActivity : AppCompatActivity() {
                                     ivLike.setImageResource(R.drawable.ic_like_24)
                                     isLike = 0
                                     likeCounts--
-//                                    likes(postDatas.post_id,"like")
+                                    likes(data.post_id,"like")
                                 }else{
                                     ivLike.setImageResource(R.drawable.ic_round_thumb_up_24)
                                     isLike = 1
                                     likeCounts++
-//                                    likes(postDatas.post_id,"like")
+                                    likes(data.post_id,"like")
                                 }
                                 tvLike.text = "$likeCounts लाइक"
                             }
                             etCommentI.setOnClickListener {
-//                                startCommentActivity(postDatas.post_id)
+                                startCommentActivity(data.post_id)
                             }
                             llComment.setOnClickListener {
-//                                startCommentActivity(postDatas.post_id)
+                                startCommentActivity(data.post_id)
                             }
                             var share = true
                             llShare.setOnClickListener {
-//                                sharePost(postDatas.discription,postDatas.post_id)
+                                sharePost(data.discription,data.post_id)
                                 var shareCounts : Int = data.shares.toInt()
-//                                likes(data.post_id,"share")
+                                likes(data.post_id,"share")
                                 if(share) {
                                     shareCounts++
                                     tvShare.text = "$shareCounts शेयर "
@@ -436,7 +454,11 @@ class SinglePostActivity : AppCompatActivity() {
 
                                 }
                             }
-                            
+                            image_slider.visibility = View.GONE
+                            tvBG.visibility = View.GONE
+                            llPoll.visibility = View.VISIBLE
+                            pbSinglePost.visibility = View.GONE
+                            llSinglePost.visibility = View.VISIBLE
                             
                         }
                     }
@@ -508,4 +530,111 @@ class SinglePostActivity : AppCompatActivity() {
     }
 
 
+
+    private fun selectPoll(postID: String,pollDes:String,tvOptions1:TextView?,tvOptions2:TextView?,tvOptions3:TextView?,tvOptions4:TextView?,tvOptions5:TextView?,seekbar1: SeekBar?,
+                           seekbar2: SeekBar?,seekbar3: SeekBar?,seekbar4: SeekBar?,seekbar5: SeekBar?,clParent:ConstraintLayout?,clParent2:ConstraintLayout?,
+                           clParent3:ConstraintLayout?,clParent4:ConstraintLayout?,clParent5:ConstraintLayout?){
+        hideClParent(clParent,clParent2,clParent3,clParent4,clParent5)
+        val session = PreferenceConnector.readString(this,PreferenceConnector.profilestatus,"")
+        val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
+        val call: retrofit2.Call<PollSelectedModel> = service.pollSelect(session, postID,pollDes)
+        try {
+            call.enqueue(object : Callback<PollSelectedModel> {
+                @SuppressLint("SetTextI18n")
+                override fun onResponse(
+                    call: Call<PollSelectedModel>,
+                    response: Response<PollSelectedModel>
+                ) {
+                    response.body()!!
+                    val pollListValue = ArrayList<Polls>()
+                    if(response.body()!!.poll.isNotEmpty()) {
+                        for (data in response.body()!!.poll) {
+                            pollListValue.add(Polls(data.poll, data.value))
+                        }
+                    }
+
+                    try {
+                        showSeekbar(seekbar1,seekbar2,seekbar3,seekbar4,seekbar5)
+                        showTvPercent(tvOptions1,tvOptions2,tvOptions3,tvOptions4,tvOptions5)
+                        tvOptions1?.text = pollListValue[0].value.toString()+"%"
+                        seekbar1?.progress = pollListValue[0].value
+                        seekbar1?.max = 100
+                        tvOptions2?.text = pollListValue[1].value.toString()+"%"
+                        seekbar2?.progress = pollListValue[1].value
+                        seekbar2?.max = 100
+                        if (pollListValue.size>=3){
+                            tvOptions3?.text = pollListValue[2].value.toString()+"%"
+                            seekbar3?.progress = pollListValue[2].value
+                            seekbar3?.max = 100
+                        }
+                        if (pollListValue.size>=4){
+                            tvOptions4?.text = pollListValue[3].value.toString()+"%"
+                            seekbar4?.progress = pollListValue[3].value
+                            seekbar4?.max = 100
+                        }
+                        if (pollListValue.size>=5){
+                            tvOptions5?.text = pollListValue[4].value.toString()+"%"
+                            seekbar5?.progress = pollListValue[4].value
+                            seekbar5?.max = 100
+                        }
+
+                    }catch (e : Exception){
+
+                    }
+                    Log.d("onPollSelectedRes", "onResponse: ${response.body()}")
+                }
+
+                override fun onFailure(call: Call<PollSelectedModel>, t: Throwable) {
+                    Log.d("onPollSelectedResFail", "onResponse: ${t.message}")
+                }
+            })
+        }catch (e : Exception){
+
+        }
+
+    }
+
+    private fun likes(postID : Int,type:String){
+        val session = PreferenceConnector.readString(this,PreferenceConnector.profilestatus,"")
+        val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
+        val call: retrofit2.Call<LikeCommentShareModel> = service.likeShare(session, postID,type)
+        try {
+            call.enqueue(object : Callback<LikeCommentShareModel>{
+                override fun onResponse(
+                    call: Call<LikeCommentShareModel>,
+                    response: Response<LikeCommentShareModel>
+                ) {
+                    response.body()!!
+                    Log.d("onResLike", "onResponse: ${response.body()}")
+                }
+
+                override fun onFailure(call: Call<LikeCommentShareModel>, t: Throwable) {
+                    Log.d("onResFailLike", "onResponse: ${t.message}")
+                }
+            })
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
+    }
+    private fun startCommentActivity(postID: Int){
+        val i = Intent(this,CommentActivity::class.java)
+        i.putExtra("postId",postID.toString())
+        PreferenceConnector.writeString(this,PreferenceConnector.ONBACKSINGLEMAIN,"True")
+        startActivity(i)
+    }
+    private fun sharePost(disc : String,postID: Int){
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "${disc}\nCheck the post on India's fastest growing app Farmer Express\nhttp://www.farmerexpress.rnsitsolutions.com/api/${postID}")
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
+    }
+
+    override fun onBackPressed() {
+        startActivity(Intent(this,MainActivity::class.java))
+        finish()
+    }
 }

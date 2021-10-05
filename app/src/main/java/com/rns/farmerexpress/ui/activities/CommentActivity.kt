@@ -1,6 +1,7 @@
 package com.rns.farmerexpress.ui.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -34,15 +35,31 @@ class CommentActivity : AppCompatActivity() {
         val i = intent.getStringExtra("postId")
         getComments(session,i,"comment_get","")
         ivBack.setOnClickListener{
+            if (PreferenceConnector.readString(this,PreferenceConnector.ONBACKSINGLEMAIN,"") == "False") {
+                startActivity(Intent(this, MainActivity::class.java))
+            }else{
+                startActivity(Intent(this, SinglePostActivity::class.java))
+            }
             finish()
         }
+//        tvNoComments.setOnClickListener {
+//            loading.visibility = View.VISIBLE
+//            recyclerView2.visibility = View.GONE
+//            tvNoComments.visibility = View.GONE
+//            getComments(session,i,"comment_get","")
+//        }
         btnComment.setOnClickListener {
             if (etCommentP.text.isEmpty()){
                 etCommentP.error = "कमेन्ट बॉक्स को रिक्त ना छोड़े"
             }else{
                 getComments(session,i,"comment",etCommentP.text.toString())
+                loading.visibility = View.VISIBLE
+                recyclerView2.visibility = View.GONE
+                tvNoComments.visibility = View.GONE
                 etCommentP.text.clear()
-                list.clear()
+                getComments(session,i,"comment_get","")
+
+//                list.clear()
             }
         }
         recyclerView2.addOnLayoutChangeListener(View.OnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
@@ -61,9 +78,10 @@ class CommentActivity : AppCompatActivity() {
                 @SuppressLint("WrongConstant")
                 override fun onResponse(call: Call<Comment>, response: Response<Comment>) {
                     response.body()!!
+                    list.clear()
                     if(response.body()!!.comments.isEmpty()){
                         tvNoComments.visibility = View.VISIBLE
-                        nestedScrollView.visibility = View.GONE
+//                        nestedScrollView.visibility = View.GONE
                         loading.visibility = View.GONE
                     }else {
                         for (comment in response.body()!!.comments) {
@@ -100,7 +118,15 @@ class CommentActivity : AppCompatActivity() {
     }
 
 
+    override fun onBackPressed() {
+        if (PreferenceConnector.readString(this,PreferenceConnector.ONBACKSINGLEMAIN,"") == "False") {
+            startActivity(Intent(this, MainActivity::class.java))
+        }else{
+            startActivity(Intent(this, SinglePostActivity::class.java))
+        }
+        finish()
 
+    }
 
 
 
