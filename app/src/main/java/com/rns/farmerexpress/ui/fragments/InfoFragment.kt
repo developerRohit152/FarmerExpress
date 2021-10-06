@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.rns.farmerexpress.R
 import com.rns.farmerexpress.ui.activities.GamesActivity
+import com.rns.farmerexpress.ui.activities.MandiActivity
 import com.rns.farmerexpress.ui.activities.NewsActivity
+import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.android.synthetic.main.fragment_info.view.*
 
 class InfoFragment : Fragment() {
@@ -26,6 +28,9 @@ class InfoFragment : Fragment() {
         }
         root.tvPlayGame.setOnClickListener {
             startActivity(Intent(requireActivity(), GamesActivity::class.java))
+        }
+        root.tvMandi.setOnClickListener {
+            startActivity(Intent(requireActivity(),MandiActivity::class.java))
         }
         return root
     }

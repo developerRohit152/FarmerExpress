@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -19,9 +20,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -48,6 +48,7 @@ import com.squareup.picasso.Picasso
 import com.squareup.picasso.Target
 import kotlinx.android.synthetic.main.fragment_all_news.view.*
 import kotlinx.android.synthetic.main.fragment_homes.*
+import kotlinx.android.synthetic.main.fragment_homes.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Call
@@ -67,6 +68,21 @@ class HomeFragment : Fragment() {
     var notLoading = true
     var count = 2
     var flagGetAll = true
+    lateinit var locAcc : ProgressBar
+    lateinit var locationCard : CardView
+    lateinit var tvCity : TextView
+    lateinit var pbHome : ProgressBar
+    lateinit var tvTemp : TextView
+    lateinit var tvFeelTemp  : TextView
+    lateinit var tvMax  : TextView
+    lateinit var tvMin  : TextView
+    lateinit var tvWind  : TextView
+    lateinit var tvCloudP  : TextView
+    lateinit var tvDay  : TextView
+    lateinit var tvDayOrNight  : TextView
+    lateinit var tbHumidity  : TextView
+    lateinit var tvWxPL  : TextView
+    lateinit var ivBgL  : ImageView
     var getWeatherDatas = true
 
 
@@ -99,8 +115,8 @@ class HomeFragment : Fragment() {
 //                )
 //                    .show()
                     getWeatherData(location.latitude.toString(), location.longitude.toString())
-                    binding.tvLocAcc.visibility = View.GONE
-                    binding.cvLocation.visibility = View.VISIBLE
+                    locAcc.visibility = View.GONE
+                    locationCard.visibility = View.VISIBLE
                     Log.d(
                         "onLocationRes",
                         "onLocationResult: ${location},${location.latitude} ${location.longitude}"
@@ -122,22 +138,37 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomesBinding.inflate(inflater, container, false)
         val root: View = binding.root
 //        val searchView : androidx.appcompat.widget.SearchView = binding.searchTemp.searchView
-
         recyclerView = binding.rvHomes
+        locAcc = binding.tvLocAcc
+        locationCard = binding.cvLocation
+        tvCity = binding.tvCity
+        pbHome = binding.pbHome
+        tvTemp = binding.tvTemp
+       tvFeelTemp =  binding.tvFeelTemp
+        tvMax = binding.tvMax
+        tvMin = binding.tvMin
+        tvWind = binding.tvWind
+        tvCloudP = binding.tvCloudP
+        tvDay = binding.tvDay
+         tvDayOrNight = binding.tvDayOrNight
+        tbHumidity = binding.tbHumidity
+        tvWxPL = binding.tvWxPL
+        ivBgL = binding.ivBgL
+
         val btnPost = binding.fab
         val session = PreferenceConnector.readString(context,PreferenceConnector.profilestatus,"")
         if (flagGetAll) {
-            binding.pbHome.visibility = View.VISIBLE
+            pbHome.visibility = View.VISIBLE
             getHomeData(session)
         }
 
 
-       binding.cvLocation.visibility = View.GONE
-        binding.tvLocAcc.visibility = View.VISIBLE
+       locationCard.visibility = View.GONE
+        locAcc.visibility = View.VISIBLE
 
         fusedLocationProvider = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        binding.rvHomes.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 addDataOnScroll(session)
 
@@ -433,35 +464,35 @@ class HomeFragment : Fragment() {
                     if (responseBody.city.locale.locale4 != null) {
                         if (responseBody.city.locale.locale3 != null) {
 
-                            binding.tvCity.text =
+                            tvCity.text =
                                 responseBody.city.locale.locale4 + "," + responseBody.city.locale.locale3 + "," + responseBody.city.locale.locale2
                         }else {
-                            binding.tvCity.text =
+                            tvCity.text =
                                 responseBody.city.locale.locale4 +","+responseBody.city.locale.locale2
                         }
                     }else if (responseBody.city.locale.locale3 != null) {
 
-                        binding.tvCity.text =
+                        tvCity.text =
                             responseBody.city.locale.locale3 + "," + responseBody.city.locale.locale2
                     }else {
-                        binding.tvCity.text =
+                        tvCity.text =
                             responseBody.city.locale.locale2
                     }
                     val weather = responseBody.weather
-                    binding.tvTemp.text = weather.temperature + "°C"
-                    binding.tvFeelTemp.text = "महसूस "+weather.temperatureFeelsLike + "°C"
-                    binding.tvMax.text = "अधिकतम  " + weather.temperatureMax24Hour + "°C"
-                    binding.tvMin.text = "न्यूनतम " + weather.temperatureMin24Hour + "°C"
-                    binding.tvWind.text = "हवा " + weather.windSpeed + " किमी/घंटे  "
-                    binding.tvCloudP.text = weather.cloudCoverPhrase
-                    binding.tvDay.text = weather.dayOfWeek
+                    tvTemp.text = weather.temperature + "°C"
+                    tvFeelTemp.text = "महसूस "+weather.temperatureFeelsLike + "°C"
+                    tvMax.text = "अधिकतम  " + weather.temperatureMax24Hour + "°C"
+                    tvMin.text = "न्यूनतम " + weather.temperatureMin24Hour + "°C"
+                    tvWind.text = "हवा " + weather.windSpeed + " किमी/घंटे  "
+                    tvCloudP.text = weather.cloudCoverPhrase
+                    tvDay.text = weather.dayOfWeek
                     if (weather.dayOrNight == "D"){
-                        binding.tvDayOrNight.text = "दिन"
+                        tvDayOrNight.text = "दिन"
                     }else{
-                        binding.tvDayOrNight.text = "रात"
+                        tvDayOrNight.text = "रात"
                     }
-                    binding.tbHumidity.text = "नमी " + weather.relativeHumidity+"%"
-                    binding.tvWxPL.text = weather.wxPhraseLong
+                    tbHumidity.text = "नमी " + weather.relativeHumidity+"%"
+                    tvWxPL.text = weather.wxPhraseLong
 //                    Picasso.get().load(weather.icon1).placeholder(R.drawable.imageplaceholder)
 //                        .error(R.drawable.imageplaceholder).into(binding.ivBg)
 //                    SvgLoader.pluck()
@@ -469,11 +500,11 @@ class HomeFragment : Fragment() {
 //                        .setPlaceHolder(R.drawable.imageplaceholder, R.drawable.imageplaceholder)
 //                        .load(weather.icon2, ivBg)
                     SvgLoader.pluck()
-                        .with(activity)
+                        .with(requireActivity())
                         .setPlaceHolder(R.drawable.imageplaceholder, R.drawable.imageplaceholder)
                         .load(weather.icon2, ivBgL)
-                    binding.tvLocAcc.visibility = View.GONE
-                    binding.cvLocation.visibility = View.VISIBLE
+                    locAcc.visibility = View.GONE
+                    locationCard.visibility = View.VISIBLE
 
 
                 }
@@ -529,12 +560,12 @@ class HomeFragment : Fragment() {
         ActivityCompat.requestPermissions(requireActivity(),arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,),MY_PERMISSIONS_REQUEST_LOCATION)
         val  mRunnable = Runnable {
             if (ActivityCompat.checkSelfPermission(
-                    this.requireContext(),
+                    requireActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ){
-                binding.cvLocation.visibility = View.GONE
-                binding.tvLocAcc.visibility = View.GONE
+                locationCard.visibility = View.GONE
+                locAcc.visibility = View.GONE
                 binding.llWeather.visibility = View.GONE
             }else{
                 fusedLocationProvider?.requestLocationUpdates(
@@ -542,7 +573,7 @@ class HomeFragment : Fragment() {
                     locationCallback,
                     null
                 )
-                binding.cvLocation.visibility = View.GONE
+                locationCard.visibility = View.GONE
                 Toast.makeText(
                     requireContext(),
                     "लोकैशन ली जा रही हैं ",
@@ -585,8 +616,8 @@ class HomeFragment : Fragment() {
                         // Now check background location
 //                        checkBackgroundLocation()
                         checkLocationPermission()
-                        binding.tvLocAcc.visibility = View.GONE
-                        binding.cvLocation.visibility = View.VISIBLE
+                        locAcc.visibility = View.GONE
+                        locationCard.visibility = View.VISIBLE
                     }
 
                 } else {
@@ -613,8 +644,8 @@ class HomeFragment : Fragment() {
                             locationCallback,
                             null
                         )
-                        binding.tvLocAcc.visibility = View.GONE
-                        binding.cvLocation.visibility = View.VISIBLE
+                        locAcc.visibility = View.GONE
+                        locationCard.visibility = View.VISIBLE
                         Toast.makeText(
                             requireContext(),
                             "Granted Background Location Permission",

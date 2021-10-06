@@ -11,6 +11,7 @@ import android.media.Image
 import android.os.Bundle
 import android.system.Os.close
 import android.util.Base64
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -44,6 +45,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import android.widget.Toast
 
 import androidx.annotation.NonNull
+import androidx.core.view.children
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -97,6 +99,9 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+//        navViewd.setNavigationItemSelectedListener { item ->
+//
+//        }
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         val navControllerd = findNavController(R.id.nav_host_fragment_content_main)
@@ -107,6 +112,14 @@ class MainActivity : AppCompatActivity() {
         val itemView: BottomNavigationItemView = v as BottomNavigationItemView
 //        itemView.setIconSize(60)
 
+        navViewd.menu.getItem(7).setOnMenuItemClickListener(MenuItem.OnMenuItemClickListener {
+            startActivity(Intent(this,NewsActivity::class.java))
+            true
+        })
+        navViewd.menu.getItem(7).setOnMenuItemClickListener(MenuItem.OnMenuItemClickListener {
+            startActivity(Intent(this,GamesActivity::class.java))
+            true
+        })
 //        itemView.textAlignment  = BOTTOM
 //        itemView.setPadding(0,0,0,20)
         val appBarConfiguration = AppBarConfiguration(
@@ -162,9 +175,11 @@ class MainActivity : AppCompatActivity() {
 //                    })
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 
     private fun byteToImage(imageUrl: String) {
         try {

@@ -152,6 +152,12 @@ interface ApiInterface {
         @Field("post_id") postId : String?,
     ): Call<GetSinglePost>
 
+
+    @GET("9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json&offset=0")
+    fun mandiData(
+        @Query("filters[state]") state : String,
+    ): Call<MandiListModal>
+
 companion object{
     const val PAY_KEY = "de41dd-569a6e-f86ef6-0ec821-4c8785"
 }

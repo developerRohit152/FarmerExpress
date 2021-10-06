@@ -40,5 +40,18 @@
             android:icon="@drawable/info"
             android:title="@string/title_info" />
 
+
+        <item
+            android:id="@+id/navigation_news"
+            android:icon="@drawable/ic_baseline_speaker_notes_24"
+            android:title="@string/title_news" />
+
+        <item
+            android:id="@+id/navigation_game"
+            android:icon="@drawable/play"
+            android:title="@string/title_info" />
+
+
+
     </group>
 </menu>

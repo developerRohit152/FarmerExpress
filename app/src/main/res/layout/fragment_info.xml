@@ -82,6 +82,69 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
+                    android:text="आज के मंडी के भाव देखे"
+                    android:textColor="@color/black"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FBABC6"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+
+                        >
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/crop" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="30dp"
+                            android:text="मंडी के भाव देखने के लिए क्लिक करे"
+                            android:textColor="#6A3838"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvMandi"
+                        android:layout_width="120dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="bottom|center"
+                        android:background="@drawable/rounded_button"
+                        android:drawableLeft="@drawable/crop"
+                        android:drawablePadding="-10dp"
+                        android:drawableTint="@color/white"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="अभी देखे"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:text="मनोरंजन"
                     android:textColor="@color/black"
                     android:textSize="18dp"
