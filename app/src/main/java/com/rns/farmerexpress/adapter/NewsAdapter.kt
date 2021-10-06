@@ -50,8 +50,7 @@ class NewsAdapter(private val activity: Activity, val list: ArrayList<NewsModel>
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-//
-        if (list[position].viewType === VIEW_TYPE_ONE) {
+        if (list[position].viewType == VIEW_TYPE_ONE) {
             Picasso.get().load("http://khabarexpo.in/admin/image.php?id=${list[position].post_id}")
                 .into(holder.itemView.ivImage)
             holder.itemView.tvCat.text = list[position].category

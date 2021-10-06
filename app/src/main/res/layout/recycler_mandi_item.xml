@@ -99,6 +99,13 @@
                     android:text="Min Price"
                     android:textColor="@color/black"
                      />
+                <TextView
+                    android:id="@+id/tvModal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/black"
+                    tools:text="modal" />
 
                 <TextView
                     android:id="@+id/tvMaxPrice"
@@ -108,13 +115,7 @@
                     android:textColor="@color/black"
                     tools:text="Max Price" />
 
-                <TextView
-                    android:id="@+id/tvModal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/black"
-                    tools:text="modal" />
+
 
             </LinearLayout>
         </LinearLayout>
