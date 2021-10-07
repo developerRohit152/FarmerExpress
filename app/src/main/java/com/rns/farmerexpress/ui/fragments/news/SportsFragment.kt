@@ -1,4 +1,4 @@
-package com.rns.farmerexpress.ui.fragments
+package com.rns.farmerexpress.ui.fragments.news
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -25,27 +24,28 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
-//
-class PoliticsFragment : Fragment() {
+class SportsFragment : Fragment() {
     var lists: ArrayList<NewsModel> = ArrayList()
     lateinit var adapter: NewsAdapter
     lateinit var layoutManager: LinearLayoutManager
     var notLoading = true
-    var count = 1
+    var count = 2
     var snackbar: Snackbar? = null
     var flagGetAll = true
+
     @SuppressLint("WrongConstant")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_politics, container, false)
+        val view = inflater.inflate(R.layout.fragment_sports, container, false)
         if (flagGetAll) {
             view?.indeterminateBar?.visibility = View.VISIBLE
-            getPoliticsNews()
+            getSportNews()
         }
-        count = 2
+
+
         view?.recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (notLoading && layoutManager.findLastCompletelyVisibleItemPosition() == lists.size - 1) {
@@ -62,8 +62,6 @@ class PoliticsFragment : Fragment() {
         return view
     }
 
-
-
     private fun addDataOnScroll() {
         lists.add(NewsModel(NewsAdapter.VIEW_TYPE_TWO, "", "", "", ""))
         adapter.notifyItemInserted(lists.size - 1)
@@ -71,7 +69,7 @@ class PoliticsFragment : Fragment() {
         val i = count++
 //        Toast.makeText(requireContext(), "count $i", Toast.LENGTH_SHORT).show()
         val service: ApiInterface = APIClient.getNewsClient()!!.create(ApiInterface::class.java)
-        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(7,10, i)
+        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(8, 10, i)
         try {
             call.enqueue(object : Callback<List<NewsModel>> {
                 @SuppressLint("WrongConstant", "ShowToast", "ResourceType")
@@ -94,21 +92,23 @@ class PoliticsFragment : Fragment() {
                                 )
                             )
                         }
-
                         view?.recyclerView?.scrollToPosition(lists.size - 12)
                         notLoading = true
                     } else {
                         snackbar =
-                            Snackbar.make(requireView(), "पेज समाप्त हुआ", Snackbar.LENGTH_INDEFINITE)
+                            Snackbar.make(
+                                requireView(),
+                                "पेज  समाप्त हुआ",
+                                Snackbar.LENGTH_INDEFINITE
+                            )
                                 .setAction("ठीक हैं ") { snackbar?.dismiss() }
                         snackbar!!.setActionTextColor(Color.WHITE);
                         val sbView = snackbar!!.view
-                        snackbar!!.setBackgroundTint(Color.rgb(239,127,62))
+                        snackbar!!.setBackgroundTint(Color.rgb(239, 127, 62))
                         val textView =
                             sbView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
                         textView.setTextColor(Color.WHITE)
                         snackbar!!.show()
-
 
                     }
                 }
@@ -124,9 +124,9 @@ class PoliticsFragment : Fragment() {
         }
     }
 
-    private fun getPoliticsNews() {
+    private fun getSportNews() {
         val service: ApiInterface = APIClient.getNewsClient()!!.create(ApiInterface::class.java)
-        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(7,10, 1)
+        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(8, 10, 1)
         try {
             call.enqueue(object : Callback<List<NewsModel>> {
                 @SuppressLint("WrongConstant")
@@ -134,7 +134,6 @@ class PoliticsFragment : Fragment() {
                     call: Call<List<NewsModel>>,
                     response: Response<List<NewsModel>>
                 ) {
-
                     val responseBody = response.body()!!
                     Log.d("resNews", "onResponse: $responseBody")
                     for (newsData in responseBody) {
@@ -168,6 +167,7 @@ class PoliticsFragment : Fragment() {
             e.printStackTrace()
         }
     }
+
     companion object {
 
     }

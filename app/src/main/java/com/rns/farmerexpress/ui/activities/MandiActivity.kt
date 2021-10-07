@@ -65,9 +65,26 @@ class MandiActivity : AppCompatActivity() {
         }
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            @SuppressLint("ShowToast")
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (total < offset + limit){
-                    addDataOnScroll()
+                if (total > offset + limit){
+                    addDataOnScroll(offset+limit)
+                }else {
+//                        Toast.makeText(requireContext(), "End of page", Toast.LENGTH_SHORT).show()
+                    snackbar =
+                        Snackbar.make(
+                            clParent,
+                            "पेज समाप्त हुआ",
+                            Snackbar.LENGTH_INDEFINITE
+                        )
+                            .setAction("ठीक हैं ") { snackbar?.dismiss() }
+                    snackbar!!.setActionTextColor(Color.WHITE)
+                    val sbView = snackbar!!.view
+                    snackbar!!.setBackgroundTint(Color.rgb(239, 127, 62))
+                    val textView =
+                        sbView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+                    textView.setTextColor(Color.WHITE)
+                    snackbar!!.show()
                 }
 
             }
@@ -85,15 +102,15 @@ class MandiActivity : AppCompatActivity() {
     }
 
 
-    private fun addDataOnScroll() {
+    private fun addDataOnScroll(offset:Int) {
         if (notLoading && layoutManager.findLastCompletelyVisibleItemPosition() == list.size - 1) {
-            list.add(Records(MandiAdapter.VIEW_TYPE_TWO, "", "", "", "","","","","",""))
+            list.add(Records(MandiAdapter.VIEW_TYPE_TWO, "", "", "", "","","","","","",""))
             adapter.notifyItemInserted(list.size - 1)
             notLoading = false
 //            val i = count++
 //        Toast.makeText(requireContext(), "count $i", Toast.LENGTH_SHORT).show()
             val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
-            val call: retrofit2.Call<MandiListModal> = service.mandiData("10", "Rajasthan")
+            val call: retrofit2.Call<MandiListModal> = service.mandiData(offset.toString(), "")
             try {
                 call.enqueue(object : Callback<MandiListModal> {
                     @SuppressLint("WrongConstant", "ShowToast", "ResourceType")
@@ -114,6 +131,7 @@ class MandiActivity : AppCompatActivity() {
                                         data.market,
                                         data.commodity,data.variety,data.arrival_date,data.min_price
                                        ,data.max_price,data.modal_price
+                                    ,data.image
                                     )
                                 )
                             }
@@ -124,23 +142,8 @@ class MandiActivity : AppCompatActivity() {
 //                            view?.recyclerView?.adapter = adapter
 //                                adapter.notifyDataSetChanged()
                             recyclerView.scrollToPosition(list.size - 12)
+                            limit += 10
                             notLoading = true
-                        } else {
-//                        Toast.makeText(requireContext(), "End of page", Toast.LENGTH_SHORT).show()
-                            snackbar =
-                                Snackbar.make(
-                                    clParent,
-                                    "पेज समाप्त हुआ",
-                                    Snackbar.LENGTH_INDEFINITE
-                                )
-                                    .setAction("ठीक हैं ") { snackbar?.dismiss() }
-                            snackbar!!.setActionTextColor(Color.WHITE)
-                            val sbView = snackbar!!.view
-                            snackbar!!.setBackgroundTint(Color.rgb(239, 127, 62))
-                            val textView =
-                                sbView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
-                            textView.setTextColor(Color.WHITE)
-                            snackbar!!.show()
                         }
                     }
 
@@ -158,7 +161,7 @@ class MandiActivity : AppCompatActivity() {
 
     private fun getMandiData(){
         val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
-        val call: Call<MandiListModal> = service.mandiData("10","Rajasthan")
+        val call: Call<MandiListModal> = service.mandiData("0","")
         try {
             call.enqueue(object : retrofit2.Callback<MandiListModal>{
                 override fun onResponse(
@@ -168,7 +171,7 @@ class MandiActivity : AppCompatActivity() {
                     val responseBody = response.body()!!
                     total = responseBody.total
                     for (data in responseBody.records){
-                        list.add(Records(MandiAdapter.VIEW_TYPE_ONE,data.state,data.district,data.market,data.commodity,data.variety,data.arrival_date,data.min_price,data.max_price,data.modal_price))
+                        list.add(Records(MandiAdapter.VIEW_TYPE_ONE,data.state,data.district,data.market,data.commodity,data.variety,data.arrival_date,data.min_price,data.max_price,data.modal_price,data.image))
                     }
                     adapter = MandiAdapter(this@MandiActivity, list)
                     recyclerView.adapter = adapter

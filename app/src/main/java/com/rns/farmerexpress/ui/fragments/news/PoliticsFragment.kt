@@ -1,4 +1,4 @@
-package com.rns.farmerexpress.ui.fragments
+package com.rns.farmerexpress.ui.fragments.news
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -24,12 +24,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
-class EntertainmentFragment : Fragment() {
+//
+class PoliticsFragment : Fragment() {
     var lists: ArrayList<NewsModel> = ArrayList()
     lateinit var adapter: NewsAdapter
     lateinit var layoutManager: LinearLayoutManager
     var notLoading = true
-    var count = 2
+    var count = 1
     var snackbar: Snackbar? = null
     var flagGetAll = true
     @SuppressLint("WrongConstant")
@@ -38,13 +39,12 @@ class EntertainmentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_entertainment, container, false)
+        val view = inflater.inflate(R.layout.fragment_politics, container, false)
         if (flagGetAll) {
             view?.indeterminateBar?.visibility = View.VISIBLE
-            getEntertainNews()
+            getPoliticsNews()
         }
-
-
+        count = 2
         view?.recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (notLoading && layoutManager.findLastCompletelyVisibleItemPosition() == lists.size - 1) {
@@ -61,6 +61,8 @@ class EntertainmentFragment : Fragment() {
         return view
     }
 
+
+
     private fun addDataOnScroll() {
         lists.add(NewsModel(NewsAdapter.VIEW_TYPE_TWO, "", "", "", ""))
         adapter.notifyItemInserted(lists.size - 1)
@@ -68,7 +70,7 @@ class EntertainmentFragment : Fragment() {
         val i = count++
 //        Toast.makeText(requireContext(), "count $i", Toast.LENGTH_SHORT).show()
         val service: ApiInterface = APIClient.getNewsClient()!!.create(ApiInterface::class.java)
-        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(5, 10, i)
+        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(7,10, i)
         try {
             call.enqueue(object : Callback<List<NewsModel>> {
                 @SuppressLint("WrongConstant", "ShowToast", "ResourceType")
@@ -91,23 +93,21 @@ class EntertainmentFragment : Fragment() {
                                 )
                             )
                         }
+
                         view?.recyclerView?.scrollToPosition(lists.size - 12)
                         notLoading = true
                     } else {
                         snackbar =
-                            Snackbar.make(
-                                requireView(),
-                                "पेज  समाप्त हुआ",
-                                Snackbar.LENGTH_INDEFINITE
-                            )
+                            Snackbar.make(requireView(), "पेज समाप्त हुआ", Snackbar.LENGTH_INDEFINITE)
                                 .setAction("ठीक हैं ") { snackbar?.dismiss() }
                         snackbar!!.setActionTextColor(Color.WHITE);
                         val sbView = snackbar!!.view
-                        snackbar!!.setBackgroundTint(Color.rgb(239, 127, 62))
+                        snackbar!!.setBackgroundTint(Color.rgb(239,127,62))
                         val textView =
                             sbView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
                         textView.setTextColor(Color.WHITE)
                         snackbar!!.show()
+
 
                     }
                 }
@@ -123,9 +123,9 @@ class EntertainmentFragment : Fragment() {
         }
     }
 
-    private fun getEntertainNews() {
+    private fun getPoliticsNews() {
         val service: ApiInterface = APIClient.getNewsClient()!!.create(ApiInterface::class.java)
-        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(5, 10, 1)
+        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(7,10, 1)
         try {
             call.enqueue(object : Callback<List<NewsModel>> {
                 @SuppressLint("WrongConstant")
@@ -133,6 +133,7 @@ class EntertainmentFragment : Fragment() {
                     call: Call<List<NewsModel>>,
                     response: Response<List<NewsModel>>
                 ) {
+
                     val responseBody = response.body()!!
                     Log.d("resNews", "onResponse: $responseBody")
                     for (newsData in responseBody) {
@@ -166,7 +167,6 @@ class EntertainmentFragment : Fragment() {
             e.printStackTrace()
         }
     }
-
     companion object {
 
     }

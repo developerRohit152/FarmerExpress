@@ -1,4 +1,4 @@
-package com.rns.farmerexpress.ui.fragments
+package com.rns.farmerexpress.ui.fragments.news
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -24,8 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
 
-class HoroscopeFragment : Fragment() {
-
+class EntertainmentFragment : Fragment() {
     var lists: ArrayList<NewsModel> = ArrayList()
     lateinit var adapter: NewsAdapter
     lateinit var layoutManager: LinearLayoutManager
@@ -33,17 +32,16 @@ class HoroscopeFragment : Fragment() {
     var count = 2
     var snackbar: Snackbar? = null
     var flagGetAll = true
-
     @SuppressLint("WrongConstant")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var  view = inflater.inflate(R.layout.fragment_horoscope, container, false)
+        val view = inflater.inflate(R.layout.fragment_entertainment, container, false)
         if (flagGetAll) {
             view?.indeterminateBar?.visibility = View.VISIBLE
-            getHoroscopeNews()
+            getEntertainNews()
         }
 
 
@@ -62,6 +60,7 @@ class HoroscopeFragment : Fragment() {
         adapter.notifyDataSetChanged()
         return view
     }
+
     private fun addDataOnScroll() {
         lists.add(NewsModel(NewsAdapter.VIEW_TYPE_TWO, "", "", "", ""))
         adapter.notifyItemInserted(lists.size - 1)
@@ -69,7 +68,7 @@ class HoroscopeFragment : Fragment() {
         val i = count++
 //        Toast.makeText(requireContext(), "count $i", Toast.LENGTH_SHORT).show()
         val service: ApiInterface = APIClient.getNewsClient()!!.create(ApiInterface::class.java)
-        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(11, 10, i)
+        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(5, 10, i)
         try {
             call.enqueue(object : Callback<List<NewsModel>> {
                 @SuppressLint("WrongConstant", "ShowToast", "ResourceType")
@@ -124,9 +123,9 @@ class HoroscopeFragment : Fragment() {
         }
     }
 
-    private fun getHoroscopeNews() {
+    private fun getEntertainNews() {
         val service: ApiInterface = APIClient.getNewsClient()!!.create(ApiInterface::class.java)
-        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(11, 10, 1)
+        val call: retrofit2.Call<List<NewsModel>> = service.getCatNews(5, 10, 1)
         try {
             call.enqueue(object : Callback<List<NewsModel>> {
                 @SuppressLint("WrongConstant")
@@ -167,6 +166,7 @@ class HoroscopeFragment : Fragment() {
             e.printStackTrace()
         }
     }
+
     companion object {
 
     }

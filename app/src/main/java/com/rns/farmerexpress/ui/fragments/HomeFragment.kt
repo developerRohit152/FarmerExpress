@@ -238,8 +238,8 @@ class HomeFragment : Fragment() {
                                     )
 //                                    adapter = HomeAdapter(requireActivity(), list)
 //
-//                                    rvHomes.layoutManager = layoutManager
-//                                    rvHomes.adapter = adapter
+//                                    recyclerView.layoutManager = layoutManager
+//                                    recyclerView.adapter = adapter
                                 }else if (data.type == "bg"){
                                     list.add(
                                         PostDatas(
@@ -266,8 +266,8 @@ class HomeFragment : Fragment() {
                                         )
                                     )
 //                                    adapter = HomeAdapter(requireActivity(), list)
-//                                    rvHomes.layoutManager = layoutManager
-//                                    rvHomes.adapter = adapter
+//                                    recyclerView.layoutManager = layoutManager
+//                                    recyclerView.adapter = adapter
                                 }else{
                                     list.add(
                                         PostDatas(
@@ -295,11 +295,11 @@ class HomeFragment : Fragment() {
                                     )
 //                                    adapter = HomeAdapter(requireActivity(), list)
 //
-//                                    rvHomes.layoutManager = layoutManager
-//                                    rvHomes.adapter = adapter
+//                                    recyclerView.layoutManager = layoutManager
+//                                    recyclerView.adapter = adapter
                                 }
                             }
-//                            rvHomes?.scrollToPosition(list.size - 18)
+//                            recyclerView?.scrollToPosition(list.size - 18)
                             notLoading = true
                         } else {
 //                        Toast.makeText(requireContext(), "End of page", Toast.LENGTH_SHORT).show()
@@ -369,8 +369,8 @@ class HomeFragment : Fragment() {
                             )
                             adapter = HomeAdapter(requireActivity(), list)
 
-                            rvHomes.layoutManager = layoutManager
-                            rvHomes.adapter = adapter
+                            recyclerView.layoutManager = layoutManager
+                            recyclerView.adapter = adapter
                         }else if (data.type == "bg"){
                             list.add(
                                 PostDatas(
@@ -397,8 +397,8 @@ class HomeFragment : Fragment() {
                                 )
                             )
                             adapter = HomeAdapter(requireActivity(), list)
-                            rvHomes.layoutManager = layoutManager
-                            rvHomes.adapter = adapter
+                            recyclerView.layoutManager = layoutManager
+                            recyclerView.adapter = adapter
                         }else{
                             list.add(
                                 PostDatas(
@@ -426,8 +426,8 @@ class HomeFragment : Fragment() {
                             )
                             adapter = HomeAdapter(requireActivity(), list)
 
-                            rvHomes.layoutManager = layoutManager
-                            rvHomes.adapter = adapter
+                            recyclerView.layoutManager = layoutManager
+                            recyclerView.adapter = adapter
                         }
                     }
                     flagGetAll = false

@@ -159,7 +159,23 @@ interface ApiInterface {
         @Query("state") state : String,
     ): Call<MandiListModal>
 
-companion object{
+
+    @FormUrlEncoded
+    @POST("admin/category")
+    fun getCatData(
+        @Field("session") session : String,
+        @Field("action") action : String?,
+    ): Call<SellModel>
+
+    @FormUrlEncoded
+    @POST("admin/subCategory")
+    fun getSubCatData(
+        @Field("session") session : String,
+        @Field("action") action : String?,
+        @Field("id") id : String?,
+    ): Call<SellModel>
+
+    companion object{
     const val PAY_KEY = "de41dd-569a6e-f86ef6-0ec821-4c8785"
 }
 

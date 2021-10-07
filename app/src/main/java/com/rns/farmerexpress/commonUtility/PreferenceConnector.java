@@ -20,6 +20,7 @@ public class PreferenceConnector {
 	public static final String 	USER_PHONE 					= "userPhone";
 	public static final String 	MOBILE 					= "mobile";
 	public static final String 	ONBACKSINGLEMAIN 					= "onback";
+	public static final String 	CATID 					= "catid";
 
 
 
