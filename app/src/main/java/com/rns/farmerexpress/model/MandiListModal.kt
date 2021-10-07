@@ -18,6 +18,7 @@ data class Records(
     val min_price : String,
     val max_price : String,
     val modal_price : String,
+    val image : String,
 )
 
 

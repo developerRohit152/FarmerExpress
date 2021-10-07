@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.rns.farmerexpress.R
 import com.rns.farmerexpress.model.*
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recycler_mandi_item.view.*
 
 class MandiAdapter(private val activity: Activity, var list: ArrayList<Records>)  : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
@@ -41,6 +42,7 @@ class MandiAdapter(private val activity: Activity, var list: ArrayList<Records>)
         if (list[position].viewType == VIEW_TYPE_ONE) {
 
             val data = list[position]
+            Picasso.get().load(data.image).placeholder(R.drawable.imageplaceholder).error(R.drawable.error).into(holder.itemView.ivImage)
             holder.itemView.tvDist.text = data.district + ", " + data.state
             holder.itemView.tvMandiName.text = "मंडी " + data.market
             holder.itemView.tvVariety.text = "क़िस्म " + data.variety
