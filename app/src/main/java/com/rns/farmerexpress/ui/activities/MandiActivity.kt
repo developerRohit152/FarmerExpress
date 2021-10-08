@@ -27,29 +27,30 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-@SuppressLint("StaticFieldLeak")
-lateinit var recyclerView: RecyclerView
-lateinit var layoutManager: LinearLayoutManager
- var list :ArrayList<Records> = ArrayList()
-var notLoading = true
-@SuppressLint("StaticFieldLeak")
-lateinit var adapter : MandiAdapter
-@SuppressLint("StaticFieldLeak")
-lateinit var pbMandi : ProgressBar
-@SuppressLint("StaticFieldLeak")
-lateinit var ivBack : ImageView
-var flagGetAll = true
-var snackbar: Snackbar? = null
-@SuppressLint("StaticFieldLeak")
-lateinit var clParent : View
- var total = 0
- var offset = 0
-var limit = 10
+
 
 
 
 
 class MandiActivity : AppCompatActivity() {
+    @SuppressLint("StaticFieldLeak")
+    lateinit var recyclerView: RecyclerView
+    lateinit var layoutManager: LinearLayoutManager
+    var list :ArrayList<Records> = ArrayList()
+    var notLoading = true
+    @SuppressLint("StaticFieldLeak")
+    lateinit var adapter : MandiAdapter
+    @SuppressLint("StaticFieldLeak")
+    lateinit var pbMandi : ProgressBar
+    @SuppressLint("StaticFieldLeak")
+    lateinit var ivBack : ImageView
+    var flagGetAll = true
+    var snackbar: Snackbar? = null
+    @SuppressLint("StaticFieldLeak")
+    lateinit var clParent : View
+    var total = 0
+    var offset = 0
+    var limit = 10
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mandi)

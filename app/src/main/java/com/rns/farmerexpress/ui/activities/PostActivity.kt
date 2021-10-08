@@ -1,8 +1,11 @@
 package com.rns.farmerexpress.ui.activities
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -36,6 +39,8 @@ import kotlinx.android.synthetic.main.nav_header_main.*
 import android.widget.LinearLayout
 
 import android.widget.EditText
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.fragment_profile_edit.*
 
 
@@ -85,7 +90,9 @@ class PostActivity : AppCompatActivity() {
             finish()
         }
         llCamera.setOnClickListener {
-            openGalleryForImage()
+            if(checkAndRequestPermissions(this)){
+                openGalleryForImage(this)
+            }
         }
         images = ArrayList()
         polls = ArrayList()
@@ -443,7 +450,69 @@ class PostActivity : AppCompatActivity() {
     }
 
 
-    private fun openGalleryForImage() {
+    fun checkAndRequestPermissions(context: Activity?): Boolean {
+        val WExtstorePermission = ContextCompat.checkSelfPermission(
+            context!!,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        val cameraPermission = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.CAMERA
+        )
+        val listPermissionsNeeded: MutableList<String> = ArrayList()
+        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.CAMERA)
+        }
+        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded
+                .add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(
+                context, listPermissionsNeeded
+                    .toTypedArray(),
+                SubCatItemFiledActivity.REQUEST_ID_MULTIPLE_PERMISSIONS
+            )
+            return false
+        }
+        return true
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            SubCatItemFiledActivity.REQUEST_ID_MULTIPLE_PERMISSIONS -> if (ContextCompat.checkSelfPermission(
+                    this@PostActivity,
+                    Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                Toast.makeText(
+                    applicationContext,
+                    "पोस्ट की फोटो के लिए कमेरे की पर्मिशन की जरूरत हैं", Toast.LENGTH_SHORT
+                )
+                    .show()
+            } else if (ContextCompat.checkSelfPermission(
+                    this@PostActivity,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                Toast.makeText(
+                    applicationContext,
+                    "पोस्ट की फोटो के लिए स्टोरेज की पर्मिशन की जरूरत हैं",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                openGalleryForImage(this@PostActivity)
+            }
+        }
+    }
+
+    private fun openGalleryForImage(context: Context) {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, 1)

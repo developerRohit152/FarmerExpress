@@ -7,32 +7,26 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toolbar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.rns.farmerexpress.R
 import com.rns.farmerexpress.adapter.SellAdapter
 import com.rns.farmerexpress.apihandler.APIClient
 import com.rns.farmerexpress.apihandler.ApiInterface
 import com.rns.farmerexpress.commonUtility.PreferenceConnector
-import com.rns.farmerexpress.databinding.ActivityMainBinding
 import com.rns.farmerexpress.databinding.ActivitySellCatItemBinding
 import com.rns.farmerexpress.model.Categories
-import com.rns.farmerexpress.model.HomeModel
 import com.rns.farmerexpress.model.SellModel
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Response
 import java.lang.Exception
 
 class SellCatItemActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySellCatItemBinding
-    lateinit var rv : RecyclerView
-    val list = ArrayList<Categories>()
-    lateinit var adapter: SellAdapter
-    lateinit var layoutManager: GridLayoutManager
-    lateinit var progressBar: ProgressBar
-    lateinit var tvToolbarH: TextView
+    private lateinit var rv : RecyclerView
+    private val list = ArrayList<Categories>()
+    private lateinit var adapter: SellAdapter
+    private lateinit var progressBar: ProgressBar
+    private lateinit var tvToolbarH: TextView
     var id = ""
     var heading = ""
     @SuppressLint("SetTextI18n")

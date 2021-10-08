@@ -32,6 +32,7 @@
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/activity_mandi.xml" value="0.19384057971014493" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/activity_sell_cat_item.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/activity_single_post.xml" value="0.18795289855072464" />
+        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/activity_sub_cat_item_fileds.xml" value="0.22" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/app_bar_main.xml" value="0.1671195652173913" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/fragment_dashboard.xml" value="0.19384057971014493" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/fragment_homes.xml" value="0.20989583333333334" />
@@ -39,10 +40,11 @@
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/fragment_sell.xml" value="0.19384057971014493" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_agri_cat.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_comments_item.xml" value="0.20989583333333334" />
+        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_edittext_item.xml" value="0.19384057971014493" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_home_bg_design.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_home_design.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_home_poll_design.xml" value="0.19384057971014493" />
-        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_mandi_item.xml" value="0.33" />
+        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_mandi_item.xml" value="0.22" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_newa_item.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_sell_item.xml" value="0.19384057971014493" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/toolbar_layout.xml" value="0.19384057971014493" />
@@ -52,5 +54,12 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="16" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="16" project-jdk-type="JavaSDK" />
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.19384057971014493" />
+      </ProjectState>
+    </option>
+  </component>
 </project>

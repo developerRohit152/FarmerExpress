@@ -16,7 +16,10 @@ import com.rns.farmerexpress.commonUtility.PreferenceConnector
 import com.rns.farmerexpress.model.Categories
 import com.rns.farmerexpress.model.SellModel
 import com.rns.farmerexpress.ui.activities.SellCatItemActivity
+import com.rns.farmerexpress.ui.activities.SubCatItemFiledActivity
 import com.squareup.picasso.Picasso
+import org.json.JSONArray
+import java.lang.Exception
 
 class SellAdapter(private val activity: Activity, var list: ArrayList<Categories>)  : RecyclerView.Adapter<SellAdapter.MyViewHolder>(){
 
@@ -38,14 +41,6 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
     }
 
     override fun onBindViewHolder(holder:MyViewHolder, position: Int) {
-//        holder.userImage.setImageResource(list[position].catImage)
-//        holder.userName.text = list.get(position).catName
-//        holder.cvParent.setOnClickListener {
-////            var i  = Intent(this,SellCatItemActivity::class.java)
-//            var i = Intent(activity,SellCatItemActivity::class.java)
-//            activity.startActivity(i)
-//        }
-
         if (list[position].viewType == VIEW_TYPE_ONE) {
             Picasso.get().load("http://${list[position].catImage}").placeholder(R.drawable.imageplaceholder).error(R.drawable.error).into(holder.userImage)
             holder.userName.text = list[position].catName
@@ -59,7 +54,30 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
         } else {
             Picasso.get().load("http://${list[position].catImage}").placeholder(R.drawable.imageplaceholder).error(R.drawable.error).into(holder.userImage)
             holder.userName.text = list[position].catName
+            val typeList = ArrayList<String>()
+            val lengthList = ArrayList<String>()
+            val placeholderList = ArrayList<String>()
+
             holder.cvParent.setOnClickListener {
+                try {
+                    val fieldObj = JSONArray(list[position].field)
+                    for (i in 0..fieldObj.length()) {
+                        val dataArr = fieldObj.getJSONObject(i)
+                        val types = dataArr.optString("type")
+                        val lengths = dataArr.optString("length")
+                        val placeholders = dataArr.optString("placeholder")
+                        typeList.add(types)
+                        lengthList.add(lengths)
+                        placeholderList.add(placeholders)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                val i = Intent(activity,SubCatItemFiledActivity::class.java)
+                i.putStringArrayListExtra("typeList",typeList)
+                i.putStringArrayListExtra("lengthList",lengthList)
+                i.putStringArrayListExtra("placeholderList",placeholderList)
+                activity.startActivity(i)
 
             }
         }
