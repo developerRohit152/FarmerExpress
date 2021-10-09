@@ -59,6 +59,9 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
             val placeholderList = ArrayList<String>()
 
             holder.cvParent.setOnClickListener {
+                typeList.clear()
+                lengthList.clear()
+                placeholderList.clear()
                 try {
                     val fieldObj = JSONArray(list[position].field)
                     for (i in 0..fieldObj.length()) {

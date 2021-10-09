@@ -29,10 +29,11 @@ import android.graphics.BitmapFactory
 
 import android.graphics.Bitmap
 import android.net.Uri
-
-
-
-
+import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import androidx.databinding.adapters.SearchViewBindingAdapter
 
 
 class SubCatItemFiledActivity : AppCompatActivity() {
@@ -47,10 +48,12 @@ class SubCatItemFiledActivity : AppCompatActivity() {
     private lateinit var ivBack : ImageView
     private lateinit var ivLeft : ImageView
     private lateinit var ivRight : ImageView
+    private lateinit var btnSubmit: Button
     private var flagFront = false
     private var flagBack = false
     private var flagRight = false
     private var flagLeft = false
+    val lists = ArrayList<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +64,7 @@ class SubCatItemFiledActivity : AppCompatActivity() {
         ivBack = findViewById(R.id.ivBack)
         ivLeft = findViewById(R.id.ivLeft)
         ivRight = findViewById(R.id.ivRight)
+        btnSubmit = findViewById(R.id.btnSubmit)
         typeList = intent.getStringArrayListExtra("typeList") as ArrayList<String>
         lengthList = intent.getStringArrayListExtra("lengthList") as ArrayList<String>
         placeholderList = intent.getStringArrayListExtra("placeholderList") as ArrayList<String>
@@ -68,7 +72,7 @@ class SubCatItemFiledActivity : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         try {
             for (i in 0..typeList.size) {
-                list.add(EdittextModel(typeList[i],lengthList[i],placeholderList[i]))
+                list.add(EdittextModel(typeList[i],lengthList[i],placeholderList[i],lists))
             }
         }catch (e : Exception){
             e.printStackTrace()
@@ -77,6 +81,15 @@ class SubCatItemFiledActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
+
+        btnSubmit.setOnClickListener {
+            var v = ""
+            for (i in 0..list.size){
+              v =   list[i].editTextValList.toString()
+            }
+            Log.d("TAG", "onCreate: $v")
+
+        }
         ivFront.setOnClickListener {
             if(checkAndRequestPermissions(this)){
                 flagFront = true
@@ -113,6 +126,8 @@ class SubCatItemFiledActivity : AppCompatActivity() {
                 chooseImage(this)
             }
         }
+
+
 
     }
 

@@ -431,7 +431,7 @@ class HomeFragment : Fragment() {
                         }
                     }
                     flagGetAll = false
-                    binding.pbHome.visibility = View.INVISIBLE
+                    pbHome.visibility = View.INVISIBLE
 //                    Log.d("OnPostRes", "onResponse: ${responseBody?.post}")
                     checkLocationPermission()
 
