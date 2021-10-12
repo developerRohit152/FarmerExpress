@@ -53,7 +53,8 @@ class EditextAdapter(private val activity: Activity, var list: ArrayList<Edittex
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 Log.d("TAG", "afterTextChanged: ")
                     editTextArrayList.add(position,holder.edittext.text.toString())
-                list[position].editTextValList.add(editTextArrayList.toString())
+
+                        list[position].editTextValList.add(position,holder.edittext.text.toString())
                 Toast.makeText(activity,editTextArrayList.toString(),Toast.LENGTH_LONG).show()
 
             }

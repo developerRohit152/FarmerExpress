@@ -34,12 +34,23 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.databinding.adapters.SearchViewBindingAdapter
+import com.rns.farmerexpress.apihandler.APIClient
+import com.rns.farmerexpress.apihandler.ApiInterface
+import com.rns.farmerexpress.commonUtility.PreferenceConnector
+import com.rns.farmerexpress.model.GetPostData
+import com.rns.farmerexpress.model.SellItemModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class SubCatItemFiledActivity : AppCompatActivity() {
     private var typeList = ArrayList<String>()
     private var lengthList = ArrayList<String>()
     private var placeholderList = ArrayList<String>()
+    private var imageList = ArrayList<String>()
+    val v = ArrayList<String>()
+    private var subCatID : String = ""
     private var list = ArrayList<EdittextModel>()
     private lateinit var adapter: EditextAdapter
     private lateinit var recyclerView: RecyclerView
@@ -68,6 +79,7 @@ class SubCatItemFiledActivity : AppCompatActivity() {
         typeList = intent.getStringArrayListExtra("typeList") as ArrayList<String>
         lengthList = intent.getStringArrayListExtra("lengthList") as ArrayList<String>
         placeholderList = intent.getStringArrayListExtra("placeholderList") as ArrayList<String>
+        subCatID = intent.getStringExtra("subcatid").toString()
         list.clear()
         layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         try {
@@ -81,13 +93,21 @@ class SubCatItemFiledActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
-
+        val contact = PreferenceConnector.readString(this,PreferenceConnector.MOBILE,"")
+        val latitude = PreferenceConnector.readString(this,PreferenceConnector.LATITUDE,"")
+        val longitude = PreferenceConnector.readString(this,PreferenceConnector.LONGITUDE,"")
         btnSubmit.setOnClickListener {
-            var v = ""
-            for (i in 0..list.size){
-              v =   list[i].editTextValList.toString()
+            try {
+                for (i in 0..list.size){
+                    v.add(list[i].editTextValList[i])
+}
+            }catch (e : Exception){
+                e.printStackTrace()
             }
+
+            Toast.makeText(this,v.toString(),Toast.LENGTH_LONG).show()
             Log.d("TAG", "onCreate: $v")
+            postSellData(subCatID,v.toString(),imageList.toString(),contact,latitude,longitude)
 
         }
         ivFront.setOnClickListener {
@@ -130,6 +150,33 @@ class SubCatItemFiledActivity : AppCompatActivity() {
 
 
     }
+
+
+    private fun postSellData(subCatIds : String,desc : String,image : String,contact : String,latitude:String,longitude:String){
+        val session  = PreferenceConnector.readString(this,PreferenceConnector.profilestatus,"")
+        val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
+        val call: retrofit2.Call<SellItemModel> = service.postSellData(session, "user","55",desc,"55","555",latitude,longitude)
+        try {
+            call.enqueue(object : Callback<SellItemModel>{
+                override fun onResponse(
+                    call: Call<SellItemModel>,
+                    response: Response<SellItemModel>
+                ) {
+                    val responseBody = response.body()
+                    Log.d("onSellItemRes", "onResponse: $responseBody")
+                    Toast.makeText(this@SubCatItemFiledActivity,responseBody.toString(),Toast.LENGTH_LONG).show()
+                }
+
+                override fun onFailure(call: Call<SellItemModel>, t: Throwable) {
+                    Log.d("onSellItemResFail", "onFailure: ${t.message}")
+                }
+
+            })
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
+    }
+
 
     fun checkAndRequestPermissions(context: Activity?): Boolean {
         val WExtstorePermission = ContextCompat.checkSelfPermission(
@@ -249,12 +296,16 @@ class SubCatItemFiledActivity : AppCompatActivity() {
                             val picturePath: String = cursor.getString(columnIndex)
                             if (flagFront) {
                                 ivFront.setImageBitmap(BitmapFactory.decodeFile(picturePath))
+                                imageList.add(picturePath)
                             }else if (flagBack){
                                 ivBack.setImageBitmap(BitmapFactory.decodeFile(picturePath))
+                                imageList.add(picturePath)
                             }else if (flagLeft){
                                 ivLeft.setImageBitmap(BitmapFactory.decodeFile(picturePath))
+                                imageList.add(picturePath)
                             }else if (flagRight){
                                 ivRight.setImageBitmap(BitmapFactory.decodeFile(picturePath))
+                                imageList.add(picturePath)
                             }else{}
                             cursor.close()
                         }

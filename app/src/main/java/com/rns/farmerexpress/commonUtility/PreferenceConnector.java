@@ -21,6 +21,8 @@ public class PreferenceConnector {
 	public static final String 	MOBILE 					= "mobile";
 	public static final String 	ONBACKSINGLEMAIN 					= "onback";
 	public static final String 	CATID 					= "catid";
+	public static final String 	LATITUDE 					= "latitude";
+	public static final String 	LONGITUDE 					= "longitude";
 
 
 

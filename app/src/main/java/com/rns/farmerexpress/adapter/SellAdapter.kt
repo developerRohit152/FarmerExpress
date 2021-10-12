@@ -80,6 +80,7 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
                 i.putStringArrayListExtra("typeList",typeList)
                 i.putStringArrayListExtra("lengthList",lengthList)
                 i.putStringArrayListExtra("placeholderList",placeholderList)
+                i.putExtra("subcatid",list[position].id)
                 activity.startActivity(i)
 
             }

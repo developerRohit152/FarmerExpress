@@ -115,6 +115,8 @@ class HomeFragment : Fragment() {
 //                )
 //                    .show()
                     getWeatherData(location.latitude.toString(), location.longitude.toString())
+                    PreferenceConnector.writeString(requireContext(),PreferenceConnector.LATITUDE,location.latitude.toString())
+                    PreferenceConnector.writeString(requireContext(),PreferenceConnector.LONGITUDE,location.longitude.toString())
                     locAcc.visibility = View.GONE
                     locationCard.visibility = View.VISIBLE
                     Log.d(

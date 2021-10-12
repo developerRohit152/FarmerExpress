@@ -12,7 +12,7 @@ import com.google.gson.Gson
 
 class APIClient {
     companion object {
-        private const val BASE_URL = "http://farmerexpress.rnsitsolutions.com/api/"
+        private const val BASE_URL = "http://farmerexpress.online/api/"
         private const val BASE_URL_NEWS = "http://khabarexpo.in/admin/"
         private const val BASE_URL_PAYMENT = "https://www.kwikapi.com/api/v2/"
         private var retrofit: Retrofit? = null

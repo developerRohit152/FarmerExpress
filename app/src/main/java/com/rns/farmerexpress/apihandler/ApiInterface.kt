@@ -175,6 +175,19 @@ interface ApiInterface {
         @Field("id") id : String?,
     ): Call<SellModel>
 
+  @FormUrlEncoded
+    @POST("store/create")
+    fun postSellData(
+        @Field("session") session : String,
+        @Field("type") action : String?,
+        @Field("sub_category") sub_cat : String?,
+        @Field("description") desc : String?,
+        @Field("image") image : List<String>,
+        @Field("contact") contact : String?,
+        @Field("latitude") latitude : String?,
+        @Field("longitude") longitude : String?,
+    ): Call<SellItemModel>
+
     companion object{
     const val PAY_KEY = "de41dd-569a6e-f86ef6-0ec821-4c8785"
 }

@@ -68,7 +68,7 @@ class MandiActivity : AppCompatActivity() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             @SuppressLint("ShowToast")
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (total > offset + limit){
+               if (total > offset + limit){
                     addDataOnScroll(offset+limit)
                 }else {
 //                        Toast.makeText(requireContext(), "End of page", Toast.LENGTH_SHORT).show()
@@ -111,7 +111,7 @@ class MandiActivity : AppCompatActivity() {
 //            val i = count++
 //        Toast.makeText(requireContext(), "count $i", Toast.LENGTH_SHORT).show()
             val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
-            val call: retrofit2.Call<MandiListModal> = service.mandiData(offset.toString(), "")
+            val call: retrofit2.Call<MandiListModal> = service.mandiData(offset.toString(), "Rajasthan")
             try {
                 call.enqueue(object : Callback<MandiListModal> {
                     @SuppressLint("WrongConstant", "ShowToast", "ResourceType")
@@ -162,7 +162,7 @@ class MandiActivity : AppCompatActivity() {
 
     private fun getMandiData(){
         val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
-        val call: Call<MandiListModal> = service.mandiData("0","")
+        val call: Call<MandiListModal> = service.mandiData("0","Rajasthan")
         try {
             call.enqueue(object : retrofit2.Callback<MandiListModal>{
                 override fun onResponse(
