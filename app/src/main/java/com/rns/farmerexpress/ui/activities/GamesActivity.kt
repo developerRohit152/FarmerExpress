@@ -28,7 +28,7 @@ class GamesActivity : AppCompatActivity() {
         }
 
         lists = ArrayList()
-        lists.add(GameCat(R.drawable.logo,"खेती संबंधित सवाल "))
+        lists.add(GameCat(R.drawable.flogo,"खेती संबंधित सवाल "))
         lists.add(GameCat(R.drawable.tt,"बीज  संबंधित सवाल "))
         lists.add(GameCat(R.drawable.tractorimg,"पशु  संबंधित सवाल "))
         lists.add(GameCat(R.drawable.timg,"वाहन  संबंधित सवाल "))

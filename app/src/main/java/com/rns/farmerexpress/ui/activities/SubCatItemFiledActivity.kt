@@ -29,19 +29,25 @@ import android.graphics.BitmapFactory
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.databinding.adapters.SearchViewBindingAdapter
+import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.rns.farmerexpress.apihandler.APIClient
 import com.rns.farmerexpress.apihandler.ApiInterface
 import com.rns.farmerexpress.commonUtility.PreferenceConnector
 import com.rns.farmerexpress.model.GetPostData
 import com.rns.farmerexpress.model.SellItemModel
+import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 
 
 class SubCatItemFiledActivity : AppCompatActivity() {
@@ -153,9 +159,12 @@ class SubCatItemFiledActivity : AppCompatActivity() {
 
 
     private fun postSellData(subCatIds : String,desc : String,image : String,contact : String,latitude:String,longitude:String){
+        val ja : JSONArray = JSONArray(imageList)
+            Log.d("TAG", "postSellData: $ja")
+
         val session  = PreferenceConnector.readString(this,PreferenceConnector.profilestatus,"")
         val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
-        val call: retrofit2.Call<SellItemModel> = service.postSellData(session, "user","55",desc,"55","555",latitude,longitude)
+        val call: retrofit2.Call<SellItemModel> = service.postSellData(session, "user","12",desc,imageList.toString(),"555",latitude,longitude)
         try {
             call.enqueue(object : Callback<SellItemModel>{
                 override fun onResponse(
@@ -276,13 +285,37 @@ class SubCatItemFiledActivity : AppCompatActivity() {
                         val selectedImage = data.extras!!["data"] as Bitmap?
                     if (flagFront) {
                         ivFront.setImageBitmap(selectedImage)
+                        imageList.add(selectedImage.toString())
                     }else if (flagBack){
                         ivBack.setImageBitmap(selectedImage)
+                        imageList.add(selectedImage.toString())
                     }else if (flagLeft){
                         ivLeft.setImageBitmap(selectedImage)
+                        imageList.add(selectedImage.toString())
                     }else if (flagRight){
                         ivRight.setImageBitmap(selectedImage)
+                        imageList.add(selectedImage.toString())
                     }
+
+//                    val filePath: Uri? = data.data
+//                    try {
+//                        val bitmap: Bitmap =
+//                            MediaStore.Images.Media.getBitmap(contentResolver, filePath)
+//                        val byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
+//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+//                        val byte: ByteArray = byteArrayOutputStream.toByteArray()
+//                        sImage = Base64.encodeToString(byte, Base64.DEFAULT)
+//                        types = "image"
+//                        byteToImage(sImage)
+//                        images.clear()
+//                        bg = ""
+//                        editText.setLines(3)
+//                        images.add(sImage)
+//
+//                    } catch (e: Exception) {
+//
+//                    }
+
                 }
                 1 -> if (resultCode == RESULT_OK && data != null) {
                     val selectedImage: Uri? = data.data

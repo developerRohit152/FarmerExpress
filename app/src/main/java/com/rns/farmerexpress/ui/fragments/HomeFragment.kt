@@ -502,7 +502,7 @@ class HomeFragment : Fragment() {
 //                        .setPlaceHolder(R.drawable.imageplaceholder, R.drawable.imageplaceholder)
 //                        .load(weather.icon2, ivBg)
                     SvgLoader.pluck()
-                        .with(requireActivity())
+                        .with(activity)
                         .setPlaceHolder(R.drawable.imageplaceholder, R.drawable.imageplaceholder)
                         .load(weather.icon2, ivBgL)
                     locAcc.visibility = View.GONE

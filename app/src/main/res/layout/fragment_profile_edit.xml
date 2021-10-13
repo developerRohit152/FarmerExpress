@@ -46,7 +46,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/logo" />
+                    android:src="@drawable/flogo" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/civChoose"

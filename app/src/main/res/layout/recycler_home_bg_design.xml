@@ -5,7 +5,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content">
 
+    <ProgressBar
+        android:id="@+id/pbbg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
     <androidx.cardview.widget.CardView
+        android:id="@+id/cvParentbg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="5dp"
@@ -56,6 +64,7 @@
                 />
         </LinearLayout>
         <ImageView
+            android:id="@+id/ivMenuOp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_weight="3.8"
@@ -93,6 +102,11 @@
             />
     </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/llBg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <TextView
             android:id="@+id/tvBG"
             android:layout_width="match_parent"
@@ -104,7 +118,18 @@
             android:textStyle="bold"
             android:layout_marginTop="10dp"
              />
-
+        <TextView
+            android:id="@+id/tvMore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="14dp"
+            android:layout_marginTop="-5dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="...और अधिक पढे "/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -261,4 +286,6 @@
 
     </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+
 </RelativeLayout>

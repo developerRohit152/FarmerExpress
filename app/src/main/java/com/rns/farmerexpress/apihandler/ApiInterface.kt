@@ -1,6 +1,8 @@
 package com.rns.farmerexpress.apihandler
 
+import com.google.gson.JsonObject
 import com.rns.farmerexpress.model.*
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -182,11 +184,18 @@ interface ApiInterface {
         @Field("type") action : String?,
         @Field("sub_category") sub_cat : String?,
         @Field("description") desc : String?,
-        @Field("image") image : List<String>,
+        @Field("image") image : String,
         @Field("contact") contact : String?,
         @Field("latitude") latitude : String?,
         @Field("longitude") longitude : String?,
     ): Call<SellItemModel>
+
+ @FormUrlEncoded
+    @POST("post/delete")
+    fun deletePost(
+        @Field("session") session : String,
+        @Field("post_id") post_id : String?,
+    ): Call<PostDelete>
 
     companion object{
     const val PAY_KEY = "de41dd-569a6e-f86ef6-0ec821-4c8785"

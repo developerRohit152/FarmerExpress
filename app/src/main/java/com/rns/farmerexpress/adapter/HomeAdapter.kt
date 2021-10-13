@@ -1,9 +1,12 @@
 package com.rns.farmerexpress.adapter
 
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Presentation
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -15,11 +18,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.SeekBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -73,6 +74,9 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
         val likeCount: TextView = itemView.findViewById(R.id.tvLike)
         val commentCount: TextView = itemView.findViewById(R.id.tvComment)
         val shareCount: TextView = itemView.findViewById(R.id.tvShare)
+        val ivMenuOP: ImageView = itemView.findViewById(R.id.ivMenuOp)
+        val llPost: LinearLayout = itemView.findViewById(R.id.llPost)
+        val tvMore: TextView = itemView.findViewById(R.id.tvMore)
 
         @SuppressLint("SetTextI18n")
         fun bind(position: Int) {
@@ -122,7 +126,25 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
                 contentc.text = list[position].discription + "\n"+tagList[0] +"," + tagList[1]+"," + tagList[2]+"," + tagList[3]+"," + tagList[4]
 
             }
-            timec.text = list[position].date
+            var tvMoreFlag = true
+            if (postDatas.discription.length > 600){
+                contentc.maxLines = 6
+                tvMore.visibility = View.VISIBLE
+            }else{
+                tvMore.visibility = View.GONE
+            }
+            tvMore.setOnClickListener {
+                if (tvMoreFlag) {
+                    contentc.maxLines = 80
+                    tvMore.text = "कम करके पढे"
+                    tvMoreFlag = false
+                } else {
+                    tvMore.text = "...और अधिक पढे"
+                    tvMoreFlag = true
+                    contentc.maxLines = 6
+                }
+            }
+                    timec.text = list[position].date
             likeCount.text = "${list[position].likes}" + " लाइक"
             commentCount.text = list[position].comments + " कमेंट्स "
             shareCount.text = list[position].shares + " शेयर"
@@ -166,6 +188,24 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
                 }
             }
 
+            ivMenuOP.setOnClickListener {
+                val session = PreferenceConnector.readString(activity,PreferenceConnector.profilestatus,"")
+                val  builder  = AlertDialog.Builder(activity)
+                builder.setTitle("Farmer Express")
+                    .setItems(R.array.list_option, DialogInterface.OnClickListener { dialog, which ->
+                       when(which){
+                           0 -> {  deletePost(session,list[position].post_id,position,list)
+
+                           }
+                           1-> {Toast.makeText(activity,"Hide",Toast.LENGTH_SHORT).show()}
+                           2-> {Toast.makeText(activity,"Resport",Toast.LENGTH_SHORT).show()}
+                           else -> {}
+                       }
+                    })
+                val alertDialog = builder.create()
+                alertDialog.show()
+            }
+
         }
     }
 
@@ -179,6 +219,10 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
         val likeCount: TextView = itemView.findViewById(R.id.tvLikeP)
         val commentCount: TextView = itemView.findViewById(R.id.tvComment)
         val shareCount: TextView = itemView.findViewById(R.id.tvShare)
+        val ivMenuOp: ImageView = itemView.findViewById(R.id.ivMenuOp)
+        val llPoll: LinearLayout = itemView.findViewById(R.id.llPoll)
+        val tvMore: TextView = itemView.findViewById(R.id.tvMore)
+
 
 //         tvOptions1 = itemView.findViewById(R.id.tvOption1)
 //         tvOptions3 = itemView.findViewById(R.id.tvOption3)
@@ -266,6 +310,25 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
             }else if (tagList.size == 5){
                 contentc.text = list[position].discription + "\n"+tagList[0] +"," + tagList[1]+"," + tagList[2]+"," + tagList[3]+"," + tagList[4]
 
+            }
+
+            var tvMoreFlag = true
+            if (postDatas.discription.length > 600){
+                contentc.maxLines = 6
+                tvMore.visibility = View.VISIBLE
+            }else{
+                tvMore.visibility = View.GONE
+            }
+            tvMore.setOnClickListener {
+                if (tvMoreFlag){
+                    contentc.maxLines = 80
+                    tvMore.text = "कम करके पढे"
+                    tvMoreFlag = false
+                }else{
+                    tvMore.text = "...और अधिक पढे"
+                    tvMoreFlag = true
+                    contentc.maxLines = 6
+                }
             }
             timec.text = list[position].date
             likeCount.text = "${list[position].likes}" + " लाइक"
@@ -398,6 +461,24 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
 //                }
 //            })
 
+            ivMenuOp.setOnClickListener {
+                val session = PreferenceConnector.readString(activity,PreferenceConnector.profilestatus,"")
+                val  builder  = AlertDialog.Builder(activity)
+                builder.setTitle("Farmer Express")
+                    .setItems(R.array.list_option, DialogInterface.OnClickListener { dialog, which ->
+                        when(which){
+                            0 -> {
+                                deletePost(session,list[position].post_id,position,list)
+
+                            }
+                            1-> {Toast.makeText(activity,"Hide",Toast.LENGTH_SHORT).show()}
+                            2-> {Toast.makeText(activity,"Resport",Toast.LENGTH_SHORT).show()}
+                            else -> {}
+                        }
+                    })
+                val alertDialog = builder.create()
+                alertDialog.show()
+            }
 
 
         }
@@ -415,8 +496,14 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
         val likeCount: TextView = itemView.findViewById(R.id.tvLike)
         val commentCount: TextView = itemView.findViewById(R.id.tvComment)
         val shareCount: TextView = itemView.findViewById(R.id.tvShare)
+        val ivMenuOP: ImageView = itemView.findViewById(R.id.ivMenuOp)
+        val tvMore: TextView = itemView.findViewById(R.id.tvMore)
+        val llBg: LinearLayout = itemView.findViewById(R.id.llBg)
 
-        @SuppressLint("SetTextI18n")
+//        val pb: ProgressBar = itemView.findViewById(R.id.pbbg)
+//        val cvParent: CardView = itemView.findViewById(R.id.cvParentbg)
+
+        @SuppressLint("SetTextI18n", "ResourceAsColor")
         fun bind(position: Int) {
             val postDatas = list[position]
             Picasso.get().load("https://" + postDatas.user_image).placeholder(R.drawable.profile)
@@ -455,18 +542,41 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
                 contentc.text = tagList[0] +", " + tagList[1]+", " + tagList[2]+", " + tagList[3]+", " + tagList[4]
 
             }
+
             likeCount.text = "${list[position].likes}" + " लाइक"
             commentCount.text = list[position].comments + " कमेंट्स "
             shareCount.text = list[position].shares + " शेयर"
             var likeCounts : Int = list[position].likes
             var isLike = postDatas.isLiked
+            var tvMoreFlag = true
             bg.text = postDatas.discription
+            if (postDatas.discription.length > 600){
+                bg.maxLines = 6
+                tvMore.visibility = View.VISIBLE
+            }else{
+                tvMore.visibility = View.GONE
+            }
+            tvMore.setOnClickListener {
+                if (tvMoreFlag){
+                    bg.maxLines = 80
+                    tvMore.text = "कम करके पढे"
+                    tvMoreFlag = false
+                }else{
+                    tvMore.text = "...और अधिक पढे"
+                    tvMoreFlag = true
+                    bg.maxLines = 6
+                }
+            }
             if (postDatas.color == "FFFFFFFF") {
                 bg.setTextColor(Color.BLACK)
+                tvMore.setTextColor(R.color.colorPrimaryDark)
             }else{
                bg.setTextColor(Color.WHITE)
+                tvMore.setTextColor(Color.WHITE)
+
             }
                 bg.setBackgroundColor(Color.parseColor("#" + postDatas.color))
+                llBg.setBackgroundColor(Color.parseColor("#" + postDatas.color))
 
             if (postDatas.isLiked == 1){
                 itemView.ivLikeB.setImageResource(R.drawable.ic_round_thumb_up_24)
@@ -505,6 +615,27 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
                     share = false
                 }
             }
+
+            ivMenuOP.setOnClickListener {
+                val session = PreferenceConnector.readString(activity,PreferenceConnector.profilestatus,"")
+                val  builder  = AlertDialog.Builder(activity)
+                builder.setTitle("Farmer Express")
+                    .setItems(R.array.list_option, DialogInterface.OnClickListener { dialog, which ->
+                        when(which){
+                            0 -> {
+                                deletePost(session,list[position].post_id,position,list)
+
+
+                            }
+                            1-> {Toast.makeText(activity,"Hide",Toast.LENGTH_SHORT).show()}
+                            2-> {Toast.makeText(activity,"Resport",Toast.LENGTH_SHORT).show()}
+                            else -> {}
+                        }
+                    })
+                val alertDialog = builder.create()
+                alertDialog.show()
+            }
+
         }
     }
 
@@ -711,6 +842,32 @@ class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>
         clParent5?.setBackgroundResource(R.drawable.rzp_border)
     }
 
+    private fun deletePost(session: String,postID: Int,position: Int,list: ArrayList<PostDatas>){
+        val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
+        val call: retrofit2.Call<PostDelete> = service.deletePost(session, postID.toString())
+        try {
+            call.enqueue(object  : Callback<PostDelete>{
+                override fun onResponse(call: Call<PostDelete>, response: Response<PostDelete>) {
+                    val responseBody = response.body()!!
+                    if (responseBody.message == "Post deleted successfuly"){
+                        list.removeAt(position)
+                        notifyItemRemoved(position)
+                        notifyItemRangeChanged(position,list.size)
+                        Toast.makeText(activity,"पोस्ट हटाए गई ",Toast.LENGTH_LONG).show()
+                    }else{
+                        Toast.makeText(activity,"यह पोस्ट आप नहीं हटा सकते",Toast.LENGTH_LONG).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<PostDelete>, t: Throwable) {
+                    Log.d("OnResFailPostDelete", "onFailure: ${t.message}")
+                }
+
+            })
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
+    }
 
     private fun showKeyboard() {
         val inputMethodManager =

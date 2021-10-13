@@ -27,4 +27,11 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+
+
+    <array name="list_option">
+        <item>पोस्ट को हटाए</item>
+        <item>पोस्ट को छिपाए</item>
+        <item>पोस्ट की शिकायत करें</item>
+    </array>
 </resources>
