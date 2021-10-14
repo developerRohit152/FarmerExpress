@@ -6,28 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.BuyActivity">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvBuy"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabInlineLabel="true"
-        app:tabMode="scrollable"
-        app:tabTextAppearance="@style/MineCustomTabText"
-        android:orientation="horizontal"
-        app:tabIndicatorAnimationMode="linear"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="match_parent"/>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/bgColor"
+    <ProgressBar
+        android:id="@+id/pbBuy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

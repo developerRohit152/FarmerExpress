@@ -2,6 +2,7 @@ package com.rns.farmerexpress.adapter
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.rns.farmerexpress.commonUtility.PreferenceConnector
 import com.rns.farmerexpress.model.Categories
 import com.rns.farmerexpress.model.SellModel
 import com.rns.farmerexpress.ui.activities.SellCatItemActivity
+import com.rns.farmerexpress.ui.activities.SubBuyActivity
 import com.rns.farmerexpress.ui.activities.SubCatItemFiledActivity
 import com.squareup.picasso.Picasso
 import org.json.JSONArray
@@ -26,6 +28,7 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
     companion object {
         const val VIEW_TYPE_ONE = 1
         const val VIEW_TYPE_TWO = 2
+        const val VIEW_TYPE_THREE = 3
     }
 
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -41,6 +44,7 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
     }
 
     override fun onBindViewHolder(holder:MyViewHolder, position: Int) {
+//        For Category data Sell
         if (list[position].viewType == VIEW_TYPE_ONE) {
             Picasso.get().load("http://${list[position].catImage}").placeholder(R.drawable.imageplaceholder).error(R.drawable.error).into(holder.userImage)
             holder.userName.text = list[position].catName
@@ -51,17 +55,20 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
                 i.putExtra("catName",list[position].catName)
                 activity.startActivity(i)
             }
-        } else {
+//            For SubCat Data Sell
+        } else if(list[position].viewType == VIEW_TYPE_TWO){
             Picasso.get().load("http://${list[position].catImage}").placeholder(R.drawable.imageplaceholder).error(R.drawable.error).into(holder.userImage)
             holder.userName.text = list[position].catName
             val typeList = ArrayList<String>()
             val lengthList = ArrayList<String>()
             val placeholderList = ArrayList<String>()
+            val nameList = ArrayList<String>()
 
             holder.cvParent.setOnClickListener {
                 typeList.clear()
                 lengthList.clear()
                 placeholderList.clear()
+                nameList.clear()
                 try {
                     val fieldObj = JSONArray(list[position].field)
                     for (i in 0..fieldObj.length()) {
@@ -69,9 +76,11 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
                         val types = dataArr.optString("type")
                         val lengths = dataArr.optString("length")
                         val placeholders = dataArr.optString("placeholder")
+                        val names = dataArr.optString("name")
                         typeList.add(types)
                         lengthList.add(lengths)
                         placeholderList.add(placeholders)
+                        nameList.add(names)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -80,9 +89,20 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
                 i.putStringArrayListExtra("typeList",typeList)
                 i.putStringArrayListExtra("lengthList",lengthList)
                 i.putStringArrayListExtra("placeholderList",placeholderList)
-                i.putExtra("subcatid",list[position].id)
+                i.putStringArrayListExtra("nameList",nameList)
+                val c = list[position].id
+                i.putExtra("subcatid",c.toString())
                 activity.startActivity(i)
 
+            }
+//            For Cat data Buy
+        }else{
+            Picasso.get().load("http://${list[position].catImage}").placeholder(R.drawable.imageplaceholder).error(R.drawable.error).into(holder.userImage)
+            holder.userName.text = list[position].catName
+            holder.cvParent.setOnClickListener {
+                val i = Intent(activity,SubBuyActivity::class.java)
+                i.putExtra("catid",(list[position].id).toString())
+                activity.startActivity(i)
             }
         }
 

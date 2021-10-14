@@ -1,6 +1,5 @@
 package com.rns.farmerexpress.adapter
 
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -8,19 +7,14 @@ import com.rns.farmerexpress.ui.fragments.*
 
 class ViewPagerAdapter(activity: FragmentActivity  ) : FragmentStateAdapter(activity){
 
-    override fun getItemCount(): Int = 7
+    override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment  {
 
         return when (position) {
-            0 -> TractorFragment()
-            1 -> CattleFragment()
-            2 -> SeedFragment()
-            3 -> AEquipmentFragment()
-            4 -> CropFragment()
-            5 -> AgricultureMarketFragment()
-            6 -> OtherCatFragment()
-            else -> TractorFragment()
+            0 -> CompanyFragment()
+            1 -> UserFragment()
+            else -> CompanyFragment()
         }
      }
 

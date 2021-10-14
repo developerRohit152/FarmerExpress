@@ -1,34 +1,24 @@
 package com.rns.farmerexpress.adapter
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Presentation
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
-import com.google.gson.JsonObject
-
 import com.rns.farmerexpress.R
 import com.rns.farmerexpress.apihandler.APIClient
 import com.rns.farmerexpress.apihandler.ApiInterface
@@ -39,17 +29,12 @@ import kotlinx.android.synthetic.main.recycler_home_design.view.*
 import kotlinx.android.synthetic.main.recycler_home_poll_design.view.*
 import kotlinx.android.synthetic.main.recycler_home_poll_design.view.cvUserImagec
 import org.json.JSONArray
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.startActivity
 import com.rns.farmerexpress.ui.activities.CommentActivity
-import androidx.core.content.ContextCompat.startActivity
 import com.rns.farmerexpress.model.*
-import kotlinx.android.synthetic.main.recycler_sell_item.view.*
 
 
 class HomeAdapter(private val activity: Activity, var list: ArrayList<PostDatas>) :

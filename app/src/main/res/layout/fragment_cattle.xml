@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.CattleFragment">
+    tools:context=".ui.fragments.UserFragment">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -14,9 +14,9 @@
         android:orientation="vertical">
 <androidx.recyclerview.widget.RecyclerView
     android:layout_width="match_parent"
-    android:layout_height="90dp"
-    android:layout_marginTop="5dp"
+    android:layout_height="80dp"
     android:id="@+id/rvCattle"
+    android:background="@color/white"
     tools:listitem="@layout/recycler_cattle_cat"
     />
 
@@ -24,7 +24,6 @@
         android:id="@+id/rvCattlePost"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/recycler_home_design"
 
         />
     </LinearLayout>

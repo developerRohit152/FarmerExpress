@@ -7,53 +7,81 @@
 
     tools:context=".ui.fragments.BuyFragment">
 
-    <ImageView
-        android:id="@+id/ivCompany"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/buyicon"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="120dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/colorPrimaryDark" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="कंपनी से खरीदे"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="14sp"
-        android:padding="5dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/ivCompany"
-        app:layout_constraintStart_toStartOf="@+id/ivCompany"
-        app:layout_constraintTop_toBottomOf="@+id/ivCompany" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabInlineLabel="true"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/MineCustomTabText"
+            android:orientation="horizontal"
+            app:tabIndicatorAnimationMode="linear"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <ImageView
-        android:id="@+id/ivUser"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="120dp"
-        android:src="@drawable/profile"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/bgColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ग्राहक से खरीदे"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:textSize="14sp"
-        android:padding="5dp"
-        android:layout_marginTop="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/ivUser"
-        app:layout_constraintStart_toStartOf="@+id/ivUser"
-        app:layout_constraintTop_toBottomOf="@+id/ivUser" />
+
+
+
+<!--    <ImageView-->
+<!--        android:id="@+id/ivCompany"-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="150dp"-->
+<!--        android:src="@drawable/buyicon"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginBottom="120dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:tint="@color/colorPrimaryDark" />-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="कंपनी से खरीदे"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textSize="14sp"-->
+<!--        android:padding="5dp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/ivCompany"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/ivCompany"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/ivCompany" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/ivUser"-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="150dp"-->
+<!--        android:layout_marginEnd="20dp"-->
+<!--        android:layout_marginBottom="120dp"-->
+<!--        android:src="@drawable/profile"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="ग्राहक से खरीदे"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textStyle="bold"-->
+<!--        android:textSize="14sp"-->
+<!--        android:padding="5dp"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/ivUser"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/ivUser"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/ivUser" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

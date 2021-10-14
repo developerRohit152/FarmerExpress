@@ -17,7 +17,7 @@ import com.rns.farmerexpress.databinding.FragmentCattleBinding
 import com.rns.farmerexpress.databinding.FragmentTractorBinding
 import com.rns.farmerexpress.model.HomeModel
 
-class TractorFragment : Fragment() {
+class CompanyFragment : Fragment() {
     private var _binding: FragmentTractorBinding? = null
     lateinit var rvTractor: RecyclerView
     private val imageList = ArrayList<SlideModel>()

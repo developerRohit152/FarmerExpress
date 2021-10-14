@@ -11,12 +11,12 @@ class ViewPagerInfoAdapter(fragment : Fragment ) : FragmentStateAdapter(fragment
     override fun createFragment(position: Int): Fragment  {
 
         return when (position) {
-            0 -> TractorFragment()
-            1 -> CattleFragment()
+            0 -> CompanyFragment()
+            1 -> UserFragment()
             2 -> SeedFragment()
             3 -> AEquipmentFragment()
             4 -> CropFragment()
-            else -> TractorFragment()
+            else -> CompanyFragment()
         }
     }
 

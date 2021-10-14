@@ -41,6 +41,9 @@ class EditextAdapter(private val activity: Activity, var list: ArrayList<Edittex
         }else if (list[position].type == "number"){
             holder.edittext.inputType = InputType.TYPE_CLASS_NUMBER
         }
+        else{
+            holder.edittext.inputType = InputType.TYPE_CLASS_TEXT
+        }
         holder.edittext.filters = arrayOf(InputFilter.LengthFilter(Integer.parseInt(list[position].length)))
         val  c : Int = Integer.parseInt(list[position].length)
 
@@ -52,11 +55,9 @@ class EditextAdapter(private val activity: Activity, var list: ArrayList<Edittex
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 Log.d("TAG", "afterTextChanged: ")
-                    editTextArrayList.add(position,holder.edittext.text.toString())
+                    editTextArrayList.add(position, holder.edittext.text.toString())
 
-                        list[position].editTextValList.add(position,holder.edittext.text.toString())
-                Toast.makeText(activity,editTextArrayList.toString(),Toast.LENGTH_LONG).show()
-
+                        list[position].editTextValList.add(position,list[position].name +" : "+holder.edittext.text.toString())
             }
 
             override fun afterTextChanged(s: Editable?) {

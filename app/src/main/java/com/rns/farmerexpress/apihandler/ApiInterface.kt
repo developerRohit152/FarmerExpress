@@ -1,6 +1,7 @@
 package com.rns.farmerexpress.apihandler
 
 import com.google.gson.JsonObject
+import com.rns.farmerexpress.adapter.BuyItemAdapter
 import com.rns.farmerexpress.model.*
 import org.json.JSONObject
 import retrofit2.Call
@@ -195,6 +196,37 @@ interface ApiInterface {
     fun deletePost(
         @Field("session") session : String,
         @Field("post_id") post_id : String?,
+    ): Call<PostDelete>
+
+
+    @FormUrlEncoded
+    @POST("store/get")
+    fun getBuyData(
+        @Field("session") session : String?,
+        @Field("type") action : String?,
+        @Field("page") page : String,
+        @Field("limit") limit : String,
+        @Field("latitude") latitude : String,
+        @Field("longitude") longitude : String,
+        @Field("minDistance") minDistance : String,
+        @Field("category") category : String?,
+        @Field("search") search : String,
+    ): Call<SubBuyModel>
+
+    @FormUrlEncoded
+    @POST("store/like")
+    fun likeSubBuy(
+        @Field("session") session : String,
+        @Field("store_id") storeid : String?,
+    ):Call<LikeSubBuyModel>
+
+
+    @FormUrlEncoded
+    @POST("store/delete")
+    fun deleteSubBuyPost(
+        @Field("session") session : String,
+        @Field("store_id") store_id : String?,
+        @Field("type") type : String?,
     ): Call<PostDelete>
 
     companion object{

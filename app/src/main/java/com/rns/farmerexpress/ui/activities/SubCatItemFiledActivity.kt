@@ -33,15 +33,11 @@ import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
-import androidx.databinding.adapters.SearchViewBindingAdapter
-import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
+import android.widget.ProgressBar
+import androidx.core.widget.NestedScrollView
 import com.rns.farmerexpress.apihandler.APIClient
 import com.rns.farmerexpress.apihandler.ApiInterface
 import com.rns.farmerexpress.commonUtility.PreferenceConnector
-import com.rns.farmerexpress.model.GetPostData
 import com.rns.farmerexpress.model.SellItemModel
 import org.json.JSONArray
 import retrofit2.Call
@@ -49,12 +45,16 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
 
+import java.io.InputStream
+
 
 class SubCatItemFiledActivity : AppCompatActivity() {
     private var typeList = ArrayList<String>()
     private var lengthList = ArrayList<String>()
     private var placeholderList = ArrayList<String>()
+    private var nameList = ArrayList<String>()
     private var imageList = ArrayList<String>()
+    private var sImage = ""
     val v = ArrayList<String>()
     private var subCatID : String = ""
     private var list = ArrayList<EdittextModel>()
@@ -66,6 +66,8 @@ class SubCatItemFiledActivity : AppCompatActivity() {
     private lateinit var ivLeft : ImageView
     private lateinit var ivRight : ImageView
     private lateinit var btnSubmit: Button
+    private lateinit var pbSubCat: ProgressBar
+    private lateinit var nsSubCat: NestedScrollView
     private var flagFront = false
     private var flagBack = false
     private var flagRight = false
@@ -82,15 +84,18 @@ class SubCatItemFiledActivity : AppCompatActivity() {
         ivLeft = findViewById(R.id.ivLeft)
         ivRight = findViewById(R.id.ivRight)
         btnSubmit = findViewById(R.id.btnSubmit)
+        pbSubCat = findViewById(R.id.pbSubCat)
+        nsSubCat = findViewById(R.id.nsSubCat)
         typeList = intent.getStringArrayListExtra("typeList") as ArrayList<String>
         lengthList = intent.getStringArrayListExtra("lengthList") as ArrayList<String>
         placeholderList = intent.getStringArrayListExtra("placeholderList") as ArrayList<String>
+        nameList = intent.getStringArrayListExtra("nameList") as ArrayList<String>
         subCatID = intent.getStringExtra("subcatid").toString()
         list.clear()
         layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         try {
             for (i in 0..typeList.size) {
-                list.add(EdittextModel(typeList[i],lengthList[i],placeholderList[i],lists))
+                list.add(EdittextModel(typeList[i],lengthList[i],placeholderList[i],nameList[i],lists))
             }
         }catch (e : Exception){
             e.printStackTrace()
@@ -99,7 +104,7 @@ class SubCatItemFiledActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
-        val contact = PreferenceConnector.readString(this,PreferenceConnector.MOBILE,"")
+        val contact = PreferenceConnector.readString(this,PreferenceConnector.USER_PHONE,"")
         val latitude = PreferenceConnector.readString(this,PreferenceConnector.LATITUDE,"")
         val longitude = PreferenceConnector.readString(this,PreferenceConnector.LONGITUDE,"")
         btnSubmit.setOnClickListener {
@@ -110,10 +115,13 @@ class SubCatItemFiledActivity : AppCompatActivity() {
             }catch (e : Exception){
                 e.printStackTrace()
             }
-
-            Toast.makeText(this,v.toString(),Toast.LENGTH_LONG).show()
-            Log.d("TAG", "onCreate: $v")
-            postSellData(subCatID,v.toString(),imageList.toString(),contact,latitude,longitude)
+            if (v.isEmpty()){
+                Toast.makeText(this,"टेक्स्ट फील्ड को रिक्त ना छोड़े",Toast.LENGTH_LONG).show()
+            }else{
+                pbSubCat.visibility = View.VISIBLE
+                nsSubCat.visibility = View.GONE
+               postSellData(subCatID,v.toString(),imageList,contact,latitude,longitude)
+            }
 
         }
         ivFront.setOnClickListener {
@@ -158,13 +166,13 @@ class SubCatItemFiledActivity : AppCompatActivity() {
     }
 
 
-    private fun postSellData(subCatIds : String,desc : String,image : String,contact : String,latitude:String,longitude:String){
-        val ja : JSONArray = JSONArray(imageList)
+    private fun postSellData(subCatIds : String,desc : String,image : ArrayList<String>,contact : String,latitude:String,longitude:String){
+        val ja : JSONArray = JSONArray(image)
             Log.d("TAG", "postSellData: $ja")
 
         val session  = PreferenceConnector.readString(this,PreferenceConnector.profilestatus,"")
         val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
-        val call: retrofit2.Call<SellItemModel> = service.postSellData(session, "user","12",desc,imageList.toString(),"555",latitude,longitude)
+        val call: retrofit2.Call<SellItemModel> = service.postSellData(session, "user",subCatIds,desc,ja.toString(),contact,latitude,longitude)
         try {
             call.enqueue(object : Callback<SellItemModel>{
                 override fun onResponse(
@@ -173,6 +181,8 @@ class SubCatItemFiledActivity : AppCompatActivity() {
                 ) {
                     val responseBody = response.body()
                     Log.d("onSellItemRes", "onResponse: $responseBody")
+                    pbSubCat.visibility = View.GONE
+                    nsSubCat.visibility = View.VISIBLE
                     Toast.makeText(this@SubCatItemFiledActivity,responseBody.toString(),Toast.LENGTH_LONG).show()
                 }
 
@@ -282,39 +292,30 @@ class SubCatItemFiledActivity : AppCompatActivity() {
         if (resultCode != RESULT_CANCELED) {
             when (requestCode) {
                 0 -> if (resultCode == RESULT_OK && data != null) {
-                        val selectedImage = data.extras!!["data"] as Bitmap?
+                        val selectedImage = data.extras!!["data"] as Bitmap
+                        val filePath: Uri? = data.data
                     if (flagFront) {
                         ivFront.setImageBitmap(selectedImage)
-                        imageList.add(selectedImage.toString())
+//                        val imageUri: Uri = data.data!!
+//                        val imageStream: InputStream? = contentResolver.openInputStream(imageUri)
+//                        val selectedImagec = BitmapFactory.decodeStream(imageStream)
+                        val encodedImage: String = encodeImage(selectedImage)
+                        imageList.add(encodedImage)
                     }else if (flagBack){
                         ivBack.setImageBitmap(selectedImage)
-                        imageList.add(selectedImage.toString())
+                        val encodedImage: String = encodeImage(selectedImage)
+                        imageList.add(encodedImage)
                     }else if (flagLeft){
                         ivLeft.setImageBitmap(selectedImage)
-                        imageList.add(selectedImage.toString())
+                        val encodedImage: String = encodeImage(selectedImage)
+                        imageList.add(encodedImage)
                     }else if (flagRight){
                         ivRight.setImageBitmap(selectedImage)
-                        imageList.add(selectedImage.toString())
+                        val encodedImage: String = encodeImage(selectedImage)
+                        imageList.add(encodedImage)
                     }
 
-//                    val filePath: Uri? = data.data
-//                    try {
-//                        val bitmap: Bitmap =
-//                            MediaStore.Images.Media.getBitmap(contentResolver, filePath)
-//                        val byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
-//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-//                        val byte: ByteArray = byteArrayOutputStream.toByteArray()
-//                        sImage = Base64.encodeToString(byte, Base64.DEFAULT)
-//                        types = "image"
-//                        byteToImage(sImage)
-//                        images.clear()
-//                        bg = ""
-//                        editText.setLines(3)
-//                        images.add(sImage)
-//
-//                    } catch (e: Exception) {
-//
-//                    }
+
 
                 }
                 1 -> if (resultCode == RESULT_OK && data != null) {
@@ -329,22 +330,47 @@ class SubCatItemFiledActivity : AppCompatActivity() {
                             val picturePath: String = cursor.getString(columnIndex)
                             if (flagFront) {
                                 ivFront.setImageBitmap(BitmapFactory.decodeFile(picturePath))
-                                imageList.add(picturePath)
+                                convertBase64(selectedImage)
+//                                imageList.add(picturePath)
                             }else if (flagBack){
                                 ivBack.setImageBitmap(BitmapFactory.decodeFile(picturePath))
-                                imageList.add(picturePath)
+//                                imageList.add(picturePath)
+                                convertBase64(selectedImage)
                             }else if (flagLeft){
                                 ivLeft.setImageBitmap(BitmapFactory.decodeFile(picturePath))
-                                imageList.add(picturePath)
+//                                imageList.add(picturePath)
+                                convertBase64(selectedImage)
                             }else if (flagRight){
                                 ivRight.setImageBitmap(BitmapFactory.decodeFile(picturePath))
-                                imageList.add(picturePath)
+//                                imageList.add(picturePath)
+                                convertBase64(selectedImage)
                             }else{}
                             cursor.close()
                         }
                     }
                 }
             }
+        }
+    }
+
+    private fun encodeImage(bm: Bitmap): String {
+        val baos = ByteArrayOutputStream()
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val b = baos.toByteArray()
+        return Base64.encodeToString(b, Base64.DEFAULT)
+    }
+    private fun convertBase64(filePath: Uri?) {
+        try {
+            val bitmap: Bitmap =
+                MediaStore.Images.Media.getBitmap(contentResolver, filePath)
+            val byteArrayOutputStream: ByteArrayOutputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            val byte: ByteArray = byteArrayOutputStream.toByteArray()
+            sImage = Base64.encodeToString(byte, Base64.DEFAULT)
+//                      byteToImage(sImage)
+            imageList.add(sImage)
+        } catch (e: Exception) {
+
         }
     }
 

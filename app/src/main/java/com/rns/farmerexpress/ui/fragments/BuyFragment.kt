@@ -25,6 +25,8 @@ BuyFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
     private lateinit var pagerAdapter: ViewPagerAdapter
+    private lateinit var viewPager: ViewPager2
+    private lateinit var tabLayout: TabLayout
     private lateinit var ivCompany: ImageView
     private lateinit var ivUser: ImageView
     // This property is only valid between onCreateView and
@@ -33,15 +35,39 @@ BuyFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        ivCompany = binding.ivCompany
-        ivUser = binding.ivUser
+        viewPager = binding.pager
+        tabLayout = binding.tabLayout
+//        ivCompany = binding.ivCompany
+//        ivUser = binding.ivUser
 
-        ivUser.setOnClickListener {
-            startActivity(Intent(activity,BuyActivity::class.java))
-        }
+//        ivUser.setOnClickListener {
+//            startActivity(Intent(activity,BuyActivity::class.java))
+//        }
 
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        tabLayout  = binding.tabLayout
+        pagerAdapter = ViewPagerAdapter(requireActivity())
+        viewPager.adapter = pagerAdapter
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+
+            when(position){
+                0 -> {tab.text = "कंपनी से खरीदे"
+                     tab.setIcon(R.drawable.buyicon)
+
+                }
+                1 -> {
+                    tab.text = "ग्राहक से खरीदे"
+                    tab.setIcon(R.drawable.profile)
+                }
+            }
+        }.attach()
+
     }
 
     override fun onDestroyView() {

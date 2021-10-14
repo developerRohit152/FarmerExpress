@@ -6,6 +6,7 @@ data class EdittextModel(
     val type : String,
     val length : String,
     val placeholder : String,
+    val name : String,
     var editTextValList : ArrayList<String>
     )
 
