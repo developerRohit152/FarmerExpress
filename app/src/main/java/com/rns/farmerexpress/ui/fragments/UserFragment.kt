@@ -9,34 +9,44 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.rns.farmerexpress.R
-import com.rns.farmerexpress.adapter.CattleCatAdapter
-import com.rns.farmerexpress.adapter.HomeAdapter
-import com.rns.farmerexpress.adapter.SellAdapter
 import com.rns.farmerexpress.apihandler.APIClient
 import com.rns.farmerexpress.apihandler.ApiInterface
 import com.rns.farmerexpress.commonUtility.PreferenceConnector
 import com.rns.farmerexpress.databinding.FragmentCattleBinding
-import com.rns.farmerexpress.model.Categories
-import com.rns.farmerexpress.model.CattleCatModel
-import com.rns.farmerexpress.model.HomeModel
-import com.rns.farmerexpress.model.SellModel
+import com.rns.farmerexpress.model.*
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import java.lang.Exception
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import com.rns.farmerexpress.adapter.*
+import com.squareup.picasso.Picasso
+import javax.annotation.Nullable
 
 
 class UserFragment : Fragment(){
-    private var _binding: FragmentCattleBinding? = null
-    lateinit var recyclerView: RecyclerView
-    lateinit var rvCattlePost: RecyclerView
 
-    val list = ArrayList<Categories>()
+
+
+    private var _binding: FragmentCattleBinding? = null
+    lateinit var rvCattlePost: RecyclerView
+    lateinit var tabs: TabLayout
+    var list = ArrayList<Categories>()
+    lateinit var viewPager: ViewPager2
+    lateinit var viewPagerSubAdapter: ViewPagerSubAdapter
+
+    val lists = ArrayList<String>()
     lateinit var adapter: CattleCatAdapter
     lateinit var layoutManager: LinearLayoutManager
     lateinit var progressBar: ProgressBar
@@ -52,18 +62,29 @@ class UserFragment : Fragment(){
         // Inflate the layout for this fragment
         _binding = FragmentCattleBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        recyclerView = binding.rvCattle
-        rvCattlePost = binding.rvCattlePost
+        viewPager = binding.pager
+        tabs = binding.tabLayout
+//        lists.add("rr")
+//        lists.add("po")
+//        lists.add("io")
+//        addCatData()
+        viewPagerSubAdapter = ViewPagerSubAdapter(requireActivity(),list.size)
+        viewPager.adapter = viewPagerSubAdapter
+
+//        init()
 
         addCatData()
 
-        adapter = CattleCatAdapter(requireActivity(),list)
-        layoutManager = LinearLayoutManager(activity,LinearLayout.HORIZONTAL,false)
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = adapter
         return root
     }
 
+
+    private fun init(){
+        val tabLayout = binding.tabLayout
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = list[position].catName
+        }.attach()
+    }
     private fun addCatData() {
         val session = PreferenceConnector.readString(activity,
             PreferenceConnector.profilestatus,"")
@@ -76,13 +97,13 @@ class UserFragment : Fragment(){
                     for (data in responseBody.category){
                         list.add(Categories(CattleCatAdapter.VIEW_TYPE_ONE,data.id,data.catImage,data.catName,"",-1))
                     }
-
+                    viewPagerSubAdapter = ViewPagerSubAdapter(requireActivity(),list.size)
+                    viewPager.adapter = viewPagerSubAdapter
+                    init()
 //                    Log.d("onCatRes", "onResponse: ${responseBody.category}")
-                    adapter = CattleCatAdapter(requireActivity(),list)
-                    recyclerView.layoutManager = layoutManager
-                    recyclerView.adapter = adapter
+//                    adapter = CattleCatAdapter(requireActivity(),list)
 //                    progressBar.visibility = View.GONE
-                    recyclerView.visibility = View.VISIBLE
+//                    recyclerView.visibility = View.VISIBLE
                 }
                 override fun onFailure(call: Call<SellModel>, t: Throwable) {
                     Log.d("onCatResFail", "onResponse: ${t.message}")
@@ -94,8 +115,4 @@ class UserFragment : Fragment(){
         }
     }
 
-
-    companion object {
-
-    }
 }
