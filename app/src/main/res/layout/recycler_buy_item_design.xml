@@ -42,6 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Name"
+                android:textColor="@color/black"
                 android:paddingLeft="5dp"
                 android:textStyle="bold"
                 />
@@ -49,11 +50,11 @@
                 android:id="@+id/tvLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="2dp"
                 android:text="location"
                 android:gravity="center_vertical"
                 android:drawableLeft="@drawable/ic_outline_location_on_24"
-                android:drawablePadding="5dp"
+                android:drawablePadding="2dp"
                 />
         </LinearLayout>
         <ImageView
@@ -65,50 +66,7 @@
             />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/llSecond"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:id="@+id/llPost"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-        <TextView
-            android:id="@+id/tvContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="10dp"
-            android:text="Content"
-            />
-             <TextView
-                android:id="@+id/tvMore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:visibility="gone"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="...और अधिक पढे "/>
-        </LinearLayout>
-        <TextView
-            android:id="@+id/tvTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.5"
-            android:drawablePadding="5dp"
-            android:paddingTop="5dp"
-            android:text="1 hour"
-            android:textStyle="bold"
-            android:drawableLeft="@drawable/ic_outline_access_time_24"
 
-            />
-    </LinearLayout>
 
         <TextView
             android:id="@+id/tvDist"
@@ -116,6 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:textStyle="bold"
+            android:visibility="gone"
             android:textColor="@color/black"
             />
         <com.denzcoskun.imageslider.ImageSlider
@@ -123,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             app:iss_auto_cycle="false"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             app:iss_selected_dot="@drawable/default_selected_dot"
             app:iss_unselected_dot="@drawable/default_unselected_dot"
             app:iss_placeholder="@drawable/imageplaceholder"
@@ -133,48 +92,72 @@
              />
 
         <LinearLayout
+            android:id="@+id/llSecond"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            >
-            <TextView
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/llPost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginRight="10dp"
-                android:text="विक्रेता से अभी बात करे \nबात करने के लिए हरा बटन दबाये"
-                />
-            <Button
-                android:id="@+id/btnCall"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="13dp"
+                    android:layout_marginRight="10dp"
+                    android:text="Content"
+                    />
+                <TextView
+                    android:id="@+id/tvMore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:text="...और अधिक पढे "/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tvTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="कॉल करे"
-                android:layout_margin="5dp"
-                android:textColor="@color/white"
-                android:background="@drawable/bg_post_btn"
-                android:textStyle="bold"
-                android:layout_weight="3"
-                />
+                android:layout_weight="3.5"
+                android:drawablePadding="2dp"
+                android:paddingTop="5dp"
+                android:text="1 hour"
+                android:drawableLeft="@drawable/ic_outline_access_time_24"
 
+                />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
             android:orientation="horizontal"
             >
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginRight="10dp"-->
+<!--                android:text="विक्रेता से अभी बात करे \nबात करने के लिए हरा बटन दबाये"-->
+<!--                />-->
 
             <LinearLayout
                 android:id="@+id/llLike"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
                 android:orientation="vertical"
                 >
                 <ImageView
@@ -194,10 +177,9 @@
                 android:id="@+id/llShare"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
                 android:orientation="vertical"
                 >
                 <ImageView
@@ -212,6 +194,42 @@
                     android:text="शेयर करे"
                     />
             </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/btnCall"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                android:src="@drawable/ic_baseline_call_24"
+                android:layout_gravity="center"
+                android:background="@drawable/rounded_button"
+                app:tint="@color/white" />
+            <ImageView
+                android:id="@+id/btnwhatsup"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:layout_weight="1"
+                android:layout_margin="2dp"
+                android:layout_gravity="center"
+                android:src="@drawable/whatsupp"
+                android:background="@drawable/rounded_button"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            >
+
+
         </LinearLayout>
 
 

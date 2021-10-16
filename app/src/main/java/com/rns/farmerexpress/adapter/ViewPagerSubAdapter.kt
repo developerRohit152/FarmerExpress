@@ -8,13 +8,12 @@ import com.rns.farmerexpress.model.Categories
 import com.rns.farmerexpress.ui.fragments.*
 import com.rns.farmerexpress.ui.fragments.CropFragment.Companion.ARG_OBJECT
 
-class ViewPagerSubAdapter(activity: FragmentActivity, numOfTabs:Int ) : FragmentStateAdapter(activity){
-    private var mNumOfTabs = numOfTabs
+class ViewPagerSubAdapter(activity: FragmentActivity, val list : ArrayList<Categories> ) : FragmentStateAdapter(activity){
+//    private var mNumOfTabs =
 
-        override fun getItemCount(): Int = mNumOfTabs
+        override fun getItemCount(): Int = list.size
 
         override fun createFragment(position: Int): Fragment {
-            val list = ArrayList<Categories>()
             // Return a NEW fragment instance in createFragment(int)
             val fragment = CropFragment()
             fragment.arguments = Bundle().apply {

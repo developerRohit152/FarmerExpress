@@ -20,7 +20,6 @@ import com.rns.farmerexpress.R
 import com.rns.farmerexpress.apihandler.APIClient
 import com.rns.farmerexpress.apihandler.ApiInterface
 import com.rns.farmerexpress.commonUtility.PreferenceConnector
-import com.rns.farmerexpress.databinding.FragmentCattleBinding
 import com.rns.farmerexpress.model.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,6 +30,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rns.farmerexpress.adapter.*
+import com.rns.farmerexpress.databinding.FragmentUserBinding
 import com.squareup.picasso.Picasso
 import javax.annotation.Nullable
 
@@ -39,8 +39,7 @@ class UserFragment : Fragment(){
 
 
 
-    private var _binding: FragmentCattleBinding? = null
-    lateinit var rvCattlePost: RecyclerView
+    private var _binding: FragmentUserBinding? = null
     lateinit var tabs: TabLayout
     var list = ArrayList<Categories>()
     lateinit var viewPager: ViewPager2
@@ -60,20 +59,16 @@ class UserFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentCattleBinding.inflate(inflater, container, false)
+        _binding = FragmentUserBinding.inflate(inflater, container, false)
         val root: View = binding.root
         viewPager = binding.pager
         tabs = binding.tabLayout
-//        lists.add("rr")
-//        lists.add("po")
-//        lists.add("io")
-//        addCatData()
-        viewPagerSubAdapter = ViewPagerSubAdapter(requireActivity(),list.size)
-        viewPager.adapter = viewPagerSubAdapter
-
-//        init()
-
+        progressBar = binding.pbCattle
+        progressBar.visibility = View.VISIBLE
         addCatData()
+        viewPagerSubAdapter = ViewPagerSubAdapter(requireActivity(),list)
+        viewPager.adapter = viewPagerSubAdapter
+        viewPager.isUserInputEnabled = false
 
         return root
     }
@@ -84,6 +79,7 @@ class UserFragment : Fragment(){
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = list[position].catName
         }.attach()
+        progressBar.visibility = View.GONE
     }
     private fun addCatData() {
         val session = PreferenceConnector.readString(activity,
@@ -97,7 +93,7 @@ class UserFragment : Fragment(){
                     for (data in responseBody.category){
                         list.add(Categories(CattleCatAdapter.VIEW_TYPE_ONE,data.id,data.catImage,data.catName,"",-1))
                     }
-                    viewPagerSubAdapter = ViewPagerSubAdapter(requireActivity(),list.size)
+                    viewPagerSubAdapter = ViewPagerSubAdapter(requireActivity(),list)
                     viewPager.adapter = viewPagerSubAdapter
                     init()
 //                    Log.d("onCatRes", "onResponse: ${responseBody.category}")

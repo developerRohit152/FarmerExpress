@@ -13,7 +13,6 @@ import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.rns.farmerexpress.R
 import com.rns.farmerexpress.adapter.HomeAdapter
-import com.rns.farmerexpress.databinding.FragmentCattleBinding
 import com.rns.farmerexpress.databinding.FragmentTractorBinding
 import com.rns.farmerexpress.model.HomeModel
 

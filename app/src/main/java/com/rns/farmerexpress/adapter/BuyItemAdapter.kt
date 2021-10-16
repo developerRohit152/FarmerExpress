@@ -3,6 +3,7 @@ package com.rns.farmerexpress.adapter
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,37 +13,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.cardview.widget.CardView
+import android.widget.LinearLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
-
 import com.rns.farmerexpress.R
+import com.rns.farmerexpress.apihandler.APIClient
+import com.rns.farmerexpress.apihandler.ApiInterface
 import com.rns.farmerexpress.commonUtility.PreferenceConnector
-import com.rns.farmerexpress.ui.activities.SellCatItemActivity
-import com.rns.farmerexpress.ui.activities.SubBuyActivity
-import com.rns.farmerexpress.ui.activities.SubCatItemFiledActivity
+import com.rns.farmerexpress.model.*
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.recycler_home_design.view.*
 import org.json.JSONArray
-import java.lang.Exception
-import android.text.TextUtils
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.rns.farmerexpress.apihandler.APIClient
-import com.rns.farmerexpress.apihandler.ApiInterface
-import com.rns.farmerexpress.model.*
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
-import androidx.core.content.ContextCompat.startActivity
-
-
-
 
 
 class BuyItemAdapter(private val activity: Activity, var list: ArrayList<SubBuyData>)  : RecyclerView.Adapter<BuyItemAdapter.MyViewHolder>(){
@@ -57,11 +47,12 @@ class BuyItemAdapter(private val activity: Activity, var list: ArrayList<SubBuyD
         val tvDist : TextView = itemView.findViewById(R.id.tvDist)
         val tvTime : TextView = itemView.findViewById(R.id.tvTime)
         val image_slider : ImageSlider = itemView.findViewById(R.id.image_slider)
-        val btnCall : Button = itemView.findViewById(R.id.btnCall)
+        val btnCall : ImageView = itemView.findViewById(R.id.btnCall)
         val llLike : LinearLayout = itemView.findViewById(R.id.llLike)
         val ivLike : ImageView = itemView.findViewById(R.id.ivLike)
         val tvLike : TextView = itemView.findViewById(R.id.tvLike)
         val llShare : LinearLayout = itemView.findViewById(R.id.llShare)
+        val btnWhatsup : ImageView = itemView.findViewById(R.id.btnwhatsup)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -75,7 +66,7 @@ class BuyItemAdapter(private val activity: Activity, var list: ArrayList<SubBuyD
         val imageList = ArrayList<SlideModel>()
         Picasso.get().load("https://" + list[position].user_image).placeholder(R.drawable.profile).error(R.drawable.error).into(holder.userImage)
         holder.userName.text = list[position].user_name
-        holder.tvLocation.text = list[position].place
+
 //        holder.tvContent.text = list[position].description
         holder.tvTime.text = list[position].date
         try {
@@ -88,8 +79,10 @@ class BuyItemAdapter(private val activity: Activity, var list: ArrayList<SubBuyD
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
         holder.image_slider.setImageList(imageList)
+
+
+
         val descList = ArrayList<String>()
         var desc = ""
         try {
@@ -101,7 +94,12 @@ class BuyItemAdapter(private val activity: Activity, var list: ArrayList<SubBuyD
         }
         holder.tvContent.text = desc
 
-        holder.tvDist.text =  "दूरी ${list[position].distance.toString().substring(0,8)} किमी."
+        try {
+
+            holder.tvLocation.text = "${list[position].place} (दूरी ${list[position].distance.toString().substring(0,8)} किमी. लगभग)"
+        }catch (e : Exception){
+            e.printStackTrace()
+        }
         var likeCounts : Int = list[position].likes
         var isLike = list[position].isLiked
         holder.tvLike.text = "${list[position].likes} लाइक"
@@ -174,6 +172,13 @@ class BuyItemAdapter(private val activity: Activity, var list: ArrayList<SubBuyD
                 })
             val alertDialog = builder.create()
             alertDialog.show()
+        }
+
+        holder.btnWhatsup.setOnClickListener {
+            val url = "https://api.whatsapp.com/send?phone=+91${list[position].contact}"
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse(url)
+            activity.startActivity(i)
         }
 
     }

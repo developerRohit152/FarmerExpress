@@ -25,8 +25,13 @@
         <entry key="..\:/Users/admin/AndroidStudioProjects/FarmerExpress/app/src/main/res/layout/recycler_home_poll_design.xml" value="0.24094202898550723" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FarmerExpress/app/src/main/res/layout/recycler_newa_item.xml" value="0.13272543059777103" />
         <entry key="..\:/Users/admin/AndroidStudioProjects/FarmerExpress/app/src/main/res/layout/toolbar_layout.xml" value="0.13272543059777103" />
+        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/drawable/all.xml" value="0.22604166666666667" />
+        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/drawable/bg_post_btn.xml" value="0.22604166666666667" />
+        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/drawable/buyicon.xml" value="0.22604166666666667" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.22604166666666667" />
+        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/drawable/ic_user.xml" value="0.22604166666666667" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/drawable/play.xml" value="0.22604166666666667" />
+        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/drawable/tab_selected.xml" value="0.22604166666666667" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/activity_buy.xml" value="0.19384057971014493" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/activity_comment.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/activity_login.xml" value="0.20989583333333334" />
@@ -50,7 +55,8 @@
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/fragment_question.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/fragment_sell.xml" value="0.19384057971014493" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_agri_cat.xml" value="0.20989583333333334" />
-        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_buy_item_design.xml" value="0.22" />
+        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_buy_item_design.xml" value="0.25" />
+        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_buy_item_input_design.xml" value="0.19384057971014493" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_cattle_cat.xml" value="0.2" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_comments_item.xml" value="0.20989583333333334" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_edittext_item.xml" value="0.19384057971014493" />
@@ -59,7 +65,7 @@
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_home_poll_design.xml" value="0.19384057971014493" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_mandi_item.xml" value="0.22" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_newa_item.xml" value="0.20989583333333334" />
-        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_sell_item.xml" value="0.19384057971014493" />
+        <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/recycler_sell_item.xml" value="0.22" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/layout/toolbar_layout.xml" value="0.19384057971014493" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/menu/activity_main_drawer.xml" value="0.22" />
         <entry key="..\:/Users/rohit/StudioProjects/FarmerExpress/app/src/main/res/menu/main.xml" value="0.20989583333333334" />

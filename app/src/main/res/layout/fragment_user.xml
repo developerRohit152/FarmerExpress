@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         app:tabInlineLabel="true"
         app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextAppearance="@style/MineCustomTabText"
         android:orientation="horizontal"
         app:tabIndicatorAnimationMode="linear"
@@ -29,6 +30,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tabLayout" />
+
+
+    <ProgressBar
+        android:id="@+id/pbCattle"
+        android:layout_gravity="top|center"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 <!--    <androidx.core.widget.NestedScrollView-->
 <!--        android:layout_width="match_parent"-->

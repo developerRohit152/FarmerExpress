@@ -53,6 +53,7 @@ class SubCatItemFiledActivity : AppCompatActivity() {
     private var lengthList = ArrayList<String>()
     private var placeholderList = ArrayList<String>()
     private var nameList = ArrayList<String>()
+    private var defList = ArrayList<String>()
     private var imageList = ArrayList<String>()
     private var sImage = ""
     val v = ArrayList<String>()
@@ -90,12 +91,16 @@ class SubCatItemFiledActivity : AppCompatActivity() {
         lengthList = intent.getStringArrayListExtra("lengthList") as ArrayList<String>
         placeholderList = intent.getStringArrayListExtra("placeholderList") as ArrayList<String>
         nameList = intent.getStringArrayListExtra("nameList") as ArrayList<String>
+        defList = intent.getStringArrayListExtra("defList") as ArrayList<String>
         subCatID = intent.getStringExtra("subcatid").toString()
         list.clear()
         layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         try {
             for (i in 0..typeList.size) {
-                list.add(EdittextModel(typeList[i],lengthList[i],placeholderList[i],nameList[i],lists))
+                if (typeList[i] == "input")
+                list.add(EdittextModel(EditextAdapter.VIEW_TYPE_EDITTEXT,typeList[i],lengthList[i],placeholderList[i],nameList[i],"",lists))
+                else
+                    list.add(EdittextModel(EditextAdapter.VIEW_TYPE_SPINNER,typeList[i],lengthList[i],placeholderList[i],nameList[i],defList[i],lists))
             }
         }catch (e : Exception){
             e.printStackTrace()

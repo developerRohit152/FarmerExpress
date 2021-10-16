@@ -7,13 +7,14 @@ import com.rns.farmerexpress.ui.fragments.*
 
 class ViewPagerAdapter(activity: FragmentActivity  ) : FragmentStateAdapter(activity){
 
-    override fun getItemCount(): Int = 2
+    override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment  {
 
         return when (position) {
             0 -> CompanyFragment()
-            1 -> UserFragment()
+            1 -> CompanyFragment()
+            2 -> UserFragment()
             else -> CompanyFragment()
         }
      }

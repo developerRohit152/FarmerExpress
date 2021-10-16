@@ -6,9 +6,11 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TableLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -27,12 +29,11 @@ BuyFragment : Fragment() {
     private lateinit var pagerAdapter: ViewPagerAdapter
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
-    private lateinit var ivCompany: ImageView
-    private lateinit var ivUser: ImageView
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
         viewPager = binding.pager
@@ -43,7 +44,22 @@ BuyFragment : Fragment() {
 //        ivUser.setOnClickListener {
 //            startActivity(Intent(activity,BuyActivity::class.java))
 //        }
+        tabLayout.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                val tabColor = ContextCompat.getColor(requireContext(),R.color.colorPrimaryDark)
+                tab?.icon?.setColorFilter(tabColor,PorterDuff.Mode.SRC_IN)
+            }
 
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                val tabColor = ContextCompat.getColor(requireContext(),R.color.black)
+                tab?.icon?.setColorFilter(tabColor,PorterDuff.Mode.SRC_IN)
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                TODO("Not yet implemented")
+            }
+
+        })
 
         return root
     }
@@ -54,16 +70,20 @@ BuyFragment : Fragment() {
         tabLayout  = binding.tabLayout
         pagerAdapter = ViewPagerAdapter(requireActivity())
         viewPager.adapter = pagerAdapter
+        viewPager.isUserInputEnabled = false
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
 
             when(position){
-                0 -> {tab.text = "कंपनी से खरीदे"
+                0 -> {tab.text = "सभी"
+                     tab.setIcon(R.drawable.all)
+
+                } 1 -> {tab.text = "कंपनी से खरीदे"
                      tab.setIcon(R.drawable.buyicon)
 
                 }
-                1 -> {
+                2 -> {
                     tab.text = "ग्राहक से खरीदे"
-                    tab.setIcon(R.drawable.profile)
+                    tab.setIcon(R.drawable.ic_user)
                 }
             }
         }.attach()

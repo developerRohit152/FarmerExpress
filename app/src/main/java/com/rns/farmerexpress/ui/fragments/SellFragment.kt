@@ -55,7 +55,7 @@ class SellFragment : Fragment() {
 
         addCatData()
         adapter = SellAdapter(requireActivity(),list)
-        recyclerView.layoutManager = GridLayoutManager(requireContext(),2)
+        recyclerView.layoutManager = GridLayoutManager(requireContext(),3)
         recyclerView.adapter = adapter
 
         return root
@@ -76,7 +76,7 @@ class SellFragment : Fragment() {
 
 //                    Log.d("onCatRes", "onResponse: ${responseBody.category}")
                     adapter = SellAdapter(requireActivity(),list)
-                    recyclerView.layoutManager = GridLayoutManager(requireContext(),2)
+                    recyclerView.layoutManager = GridLayoutManager(requireContext(),3)
                     recyclerView.adapter = adapter
                     progressBar.visibility = View.GONE
                     recyclerView.visibility = View.VISIBLE

@@ -63,12 +63,14 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
             val lengthList = ArrayList<String>()
             val placeholderList = ArrayList<String>()
             val nameList = ArrayList<String>()
+            val defaultList = ArrayList<String>()
 
             holder.cvParent.setOnClickListener {
                 typeList.clear()
                 lengthList.clear()
                 placeholderList.clear()
                 nameList.clear()
+                defaultList.clear()
                 try {
                     val fieldObj = JSONArray(list[position].field)
                     for (i in 0..fieldObj.length()) {
@@ -77,10 +79,12 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
                         val lengths = dataArr.optString("length")
                         val placeholders = dataArr.optString("placeholder")
                         val names = dataArr.optString("name")
+                        val default = dataArr.optString("default")
                         typeList.add(types)
                         lengthList.add(lengths)
                         placeholderList.add(placeholders)
                         nameList.add(names)
+                        defaultList.add(default)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -90,6 +94,7 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
                 i.putStringArrayListExtra("lengthList",lengthList)
                 i.putStringArrayListExtra("placeholderList",placeholderList)
                 i.putStringArrayListExtra("nameList",nameList)
+                i.putStringArrayListExtra("defList",defaultList)
                 val c = list[position].id
                 i.putExtra("subcatid",c.toString())
                 activity.startActivity(i)
@@ -97,13 +102,13 @@ class SellAdapter(private val activity: Activity, var list: ArrayList<Categories
             }
 //            For Cat data Buy
         }else{
-            Picasso.get().load("http://${list[position].catImage}").placeholder(R.drawable.imageplaceholder).error(R.drawable.error).into(holder.userImage)
-            holder.userName.text = list[position].catName
-            holder.cvParent.setOnClickListener {
-                val i = Intent(activity,SubBuyActivity::class.java)
-                i.putExtra("catid",(list[position].id).toString())
-                activity.startActivity(i)
-            }
+//            Picasso.get().load("http://${list[position].catImage}").placeholder(R.drawable.imageplaceholder).error(R.drawable.error).into(holder.userImage)
+//            holder.userName.text = list[position].catName
+//            holder.cvParent.setOnClickListener {
+//                val i = Intent(activity,SubBuyActivity::class.java)
+//                i.putExtra("catid",(list[position].id).toString())
+//                activity.startActivity(i)
+//            }
         }
 
 

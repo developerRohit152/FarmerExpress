@@ -14,7 +14,7 @@ data class SubBuyData(
     val user_image: String,
     val place: String,
     val description: String,
-    val store_images: String,
+    val store_images: String?,
     val contact: String,
     val distance: Float,
     val likes: Int,

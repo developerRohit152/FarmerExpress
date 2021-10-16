@@ -43,41 +43,41 @@ class BuyActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
         rvBuy.visibility = View.GONE
 
-        addCatData()
+//        addCatData()
 
         adapter = SellAdapter(this,list)
         rvBuy.layoutManager = GridLayoutManager(this,2)
         rvBuy.adapter = adapter
 
     }
-
-    private fun addCatData() {
-        val session = PreferenceConnector.readString(this,
-            PreferenceConnector.profilestatus,"")
-        val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
-        val call: Call<SellModel> = service.getCatData(session,"select")
-        try {
-            call.enqueue(object : retrofit2.Callback<SellModel>{
-                override fun onResponse(call: Call<SellModel>, response: Response<SellModel>) {
-                    val responseBody = response.body()!!
-                    for (data in responseBody.category){
-                        list.add(Categories(SellAdapter.VIEW_TYPE_THREE,data.id,data.catImage,data.catName,"",-1))
-                    }
-
-//                    Log.d("onCatRes", "onResponse: ${responseBody.category}")
-                    adapter = SellAdapter(this@BuyActivity,list)
-                    rvBuy.layoutManager = GridLayoutManager(this@BuyActivity,2)
-                    rvBuy.adapter = adapter
-                    progressBar.visibility = View.GONE
-                    rvBuy.visibility = View.VISIBLE
-                }
-                override fun onFailure(call: Call<SellModel>, t: Throwable) {
-                    Log.d("onCatResFail", "onResponse: ${t.message}")
-                }
-
-            })
-        }catch (e : Exception){
-            e.printStackTrace()
-        }
-    }
+//
+//    private fun addCatData() {
+//        val session = PreferenceConnector.readString(this,
+//            PreferenceConnector.profilestatus,"")
+//        val service: ApiInterface = APIClient.getClient()!!.create(ApiInterface::class.java)
+//        val call: Call<SellModel> = service.getCatData(session,"select")
+//        try {
+//            call.enqueue(object : retrofit2.Callback<SellModel>{
+//                override fun onResponse(call: Call<SellModel>, response: Response<SellModel>) {
+//                    val responseBody = response.body()!!
+//                    for (data in responseBody.category){
+//                        list.add(Categories(SellAdapter.VIEW_TYPE_THREE,data.id,data.catImage,data.catName,"",-1))
+//                    }
+//
+////                    Log.d("onCatRes", "onResponse: ${responseBody.category}")
+//                    adapter = SellAdapter(this@BuyActivity,list)
+//                    rvBuy.layoutManager = GridLayoutManager(this@BuyActivity,2)
+//                    rvBuy.adapter = adapter
+//                    progressBar.visibility = View.GONE
+//                    rvBuy.visibility = View.VISIBLE
+//                }
+//                override fun onFailure(call: Call<SellModel>, t: Throwable) {
+//                    Log.d("onCatResFail", "onResponse: ${t.message}")
+//                }
+//
+//            })
+//        }catch (e : Exception){
+//            e.printStackTrace()
+//        }
+//    }
     }
